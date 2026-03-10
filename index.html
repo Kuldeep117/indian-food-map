@@ -6,115 +6,223 @@
     <title>India Food Map</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial; background: #fff8f0; }
-        header { background: linear-gradient(135deg, #ff6600, #ff9900); color: white; padding: 30px; text-align: center; }
-        header h1 { font-size: 2.5em; }
-        header p { font-size: 1.1em; margin-top: 10px; }
-        .search { text-align: center; padding: 20px; }
-        .search input { padding: 10px 20px; width: 300px; border-radius: 25px; border: 2px solid #ff6600; font-size: 16px; }
-        .states { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
-        .card { background: white; border-radius: 15px; margin: 10px; padding: 20px; width: 300px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-top: 4px solid #ff6600; }
-        .card h2 { color: #ff6600; font-size: 1.3em; }
-        .dish { background: #fff8f0; padding: 8px; margin: 5px 0; border-radius: 8px; font-size: 14px; }
-        .dish span { font-weight: bold; color: #ff6600; }
-        .price { color: #28a745; font-size: 13px; }
-        .tag { background: #ff6600; color: white; padding: 3px 8px; border-radius: 10px; font-size: 11px; margin: 2px; display: inline-block; }
-        footer { background: #333; color: white; text-align: center; padding: 20px; margin-top: 30px; }
+        body { font-family: 'Arial', sans-serif; background: #0a0a1a; color: #fff; }
+        header { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); padding: 40px 20px; text-align: center; border-bottom: 2px solid #e94560; }
+        header h1 { font-size: 3em; background: linear-gradient(to right, #e94560, #ff9900); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { color: #aaa; margin-top: 10px; font-size: 1.1em; }
+        .search-box { text-align: center; padding: 30px; background: #0f0f2a; }
+        .search-box input { padding: 12px 25px; width: 350px; border-radius: 25px; border: 2px solid #e94560; background: #1a1a3e; color: white; font-size: 16px; outline: none; }
+        .search-box button { padding: 12px 25px; background: linear-gradient(135deg, #e94560, #ff9900); color: white; border: none; border-radius: 25px; font-size: 16px; cursor: pointer; margin-left: 10px; }
+        .search-box button:hover { opacity: 0.8; }
+        .filter { text-align: center; padding: 10px; background: #0f0f2a; }
+        .filter button { margin: 5px; padding: 8px 20px; border-radius: 20px; border: 1px solid #e94560; background: transparent; color: #e94560; cursor: pointer; font-size: 14px; }
+        .filter button:hover, .filter button.active { background: #e94560; color: white; }
+        .states { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; background: #0a0a1a; }
+        .card { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 15px; margin: 10px; padding: 20px; width: 320px; border: 1px solid #e94560; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(233,69,96,0.3); }
+        .card h2 { color: #e94560; font-size: 1.3em; margin-bottom: 5px; }
+        .capital { color: #aaa; font-size: 13px; margin-bottom: 10px; }
+        .dish { background: #0f0f2a; padding: 8px; margin: 5px 0; border-radius: 8px; font-size: 14px; border-left: 3px solid #ff9900; }
+        .dish span { font-weight: bold; color: #ff9900; }
+        .restaurant { background: #0f0f2a; padding: 8px; margin: 5px 0; border-radius: 8px; font-size: 13px; border-left: 3px solid #00b4d8; }
+        .restaurant span { color: #00b4d8; font-weight: bold; }
+        .price { color: #00b894; font-size: 13px; margin-top: 10px; }
+        .tag { background: #e94560; color: white; padding: 3px 8px; border-radius: 10px; font-size: 11px; margin: 2px; display: inline-block; }
+        .tip { background: #1a3a1a; padding: 8px; margin-top: 8px; border-radius: 8px; font-size: 12px; color: #00b894; border-left: 3px solid #00b894; }
+        footer { background: #0f0f2a; color: #aaa; text-align: center; padding: 30px; border-top: 2px solid #e94560; }
+        #noResults { display: none; text-align: center; color: #aaa; padding: 50px; font-size: 1.2em; }
     </style>
 </head>
 <body>
     <header>
         <h1>🍛 India Food Map</h1>
-        <p>Discover the best food across India | Tourist's Ultimate Food Guide</p>
+        <p>Tourist's Ultimate Food Guide | Har State Ka Swad</p>
     </header>
 
-    <div class="search">
-        <input type="text" id="search" onkeyup="searchFood()" placeholder="Search state or dish...">
+    <div class="search-box">
+        <input type="text" id="search" placeholder="Search state, dish or restaurant...">
+        <button onclick="searchFood()">🔍 Search</button>
+    </div>
+
+    <div class="filter">
+        <button class="active" onclick="filterRegion('all')">All India</button>
+        <button onclick="filterRegion('North India')">North</button>
+        <button onclick="filterRegion('South India')">South</button>
+        <button onclick="filterRegion('East India')">East</button>
+        <button onclick="filterRegion('West India')">West</button>
     </div>
 
     <div class="states" id="states">
-        <div class="card">
+        <div class="card" data-region="North India">
             <h2>🏯 Rajasthan</h2>
+            <p class="capital">🏛️ Capital: Jaipur</p>
             <span class="tag">North India</span>
             <div class="dish"><span>Dal Baati Churma</span> - Traditional must try!</div>
             <div class="dish"><span>Laal Maas</span> - Spicy mutton curry</div>
             <div class="dish"><span>Ghevar</span> - Famous sweet</div>
+            <div class="restaurant"><span>🍽️ Chokhi Dhani</span> - Best traditional food</div>
+            <div class="restaurant"><span>🍽️ LMB Hotel Jaipur</span> - Since 1954</div>
             <p class="price">💰 Budget: ₹50-200 per meal</p>
+            <div class="tip">💡 Tip: Visit during Diwali for special sweets!</div>
         </div>
-        <div class="card">
+
+        <div class="card" data-region="South India">
             <h2>🌴 Kerala</h2>
+            <p class="capital">🏛️ Capital: Thiruvananthapuram</p>
             <span class="tag">South India</span>
             <div class="dish"><span>Appam & Stew</span> - Breakfast special</div>
             <div class="dish"><span>Kerala Fish Curry</span> - Must try!</div>
             <div class="dish"><span>Puttu & Kadala</span> - Local favorite</div>
+            <div class="restaurant"><span>🍽️ Dhe Puttu, Kochi</span> - Famous puttu place</div>
+            <div class="restaurant"><span>🍽️ Paragon Restaurant</span> - Best seafood</div>
             <p class="price">💰 Budget: ₹80-300 per meal</p>
+            <div class="tip">💡 Tip: Try banana leaf meals on Sundays!</div>
         </div>
-        <div class="card">
+
+        <div class="card" data-region="West India">
             <h2>🏖️ Goa</h2>
+            <p class="capital">🏛️ Capital: Panaji</p>
             <span class="tag">West India</span>
             <div class="dish"><span>Fish Curry Rice</span> - Goan staple</div>
             <div class="dish"><span>Prawn Balchao</span> - Spicy pickle</div>
             <div class="dish"><span>Bebinca</span> - Traditional dessert</div>
+            <div class="restaurant"><span>🍽️ Fisherman's Wharf</span> - Best seafood</div>
+            <div class="restaurant"><span>🍽️ Britto's Beach Shack</span> - Iconic place</div>
             <p class="price">💰 Budget: ₹150-500 per meal</p>
+            <div class="tip">💡 Tip: Eat at beach shacks for authentic Goan food!</div>
         </div>
-        <div class="card">
+
+        <div class="card" data-region="North India">
             <h2>🕌 Punjab</h2>
+            <p class="capital">🏛️ Capital: Chandigarh</p>
             <span class="tag">North India</span>
             <div class="dish"><span>Butter Chicken</span> - World famous!</div>
             <div class="dish"><span>Sarson Da Saag</span> - Winter special</div>
             <div class="dish"><span>Amritsari Kulcha</span> - Street food</div>
+            <div class="restaurant"><span>🍽️ Kesar Da Dhaba, Amritsar</span> - Since 1916!</div>
+            <div class="restaurant"><span>🍽️ Brothers Dhaba</span> - Must visit</div>
             <p class="price">💰 Budget: ₹100-400 per meal</p>
+            <div class="tip">💡 Tip: Eat langar at Golden Temple - free & delicious!</div>
         </div>
-        <div class="card">
+
+        <div class="card" data-region="South India">
             <h2>🌶️ Andhra Pradesh</h2>
+            <p class="capital">🏛️ Capital: Amaravati</p>
             <span class="tag">South India</span>
             <div class="dish"><span>Hyderabadi Biryani</span> - World famous!</div>
             <div class="dish"><span>Pesarattu</span> - Green moong dosa</div>
             <div class="dish"><span>Gongura Pickle</span> - Must buy!</div>
+            <div class="restaurant"><span>🍽️ Paradise Restaurant</span> - Best biryani</div>
+            <div class="restaurant"><span>🍽️ Bawarchi Restaurant</span> - Iconic biryani</div>
             <p class="price">💰 Budget: ₹80-350 per meal</p>
+            <div class="tip">💡 Tip: Order biryani with mirchi ka salan!</div>
         </div>
-        <div class="card">
+
+        <div class="card" data-region="East India">
             <h2>🐟 West Bengal</h2>
+            <p class="capital">🏛️ Capital: Kolkata</p>
             <span class="tag">East India</span>
             <div class="dish"><span>Hilsa Fish Curry</span> - Bengali special</div>
             <div class="dish"><span>Mishti Doi</span> - Sweet yogurt</div>
             <div class="dish"><span>Kathi Roll</span> - Street food</div>
+            <div class="restaurant"><span>🍽️ 6 Ballygunge Place</span> - Best Bengali food</div>
+            <div class="restaurant"><span>🍽️ Arsalan Restaurant</span> - Best biryani</div>
             <p class="price">💰 Budget: ₹60-250 per meal</p>
+            <div class="tip">💡 Tip: Try rosogolla at KC Das - original shop!</div>
         </div>
-        <div class="card">
+
+        <div class="card" data-region="North India">
             <h2>🏔️ Kashmir</h2>
+            <p class="capital">🏛️ Capital: Srinagar</p>
             <span class="tag">North India</span>
             <div class="dish"><span>Rogan Josh</span> - Aromatic mutton</div>
             <div class="dish"><span>Yakhni</span> - Yogurt based curry</div>
             <div class="dish"><span>Kahwa Tea</span> - Must try!</div>
+            <div class="restaurant"><span>🍽️ Ahdoos Restaurant</span> - Since 1918</div>
+            <div class="restaurant"><span>🍽️ Mughal Darbar</span> - Best wazwan</div>
             <p class="price">💰 Budget: ₹100-400 per meal</p>
+            <div class="tip">💡 Tip: Try traditional Wazwan feast - 36 courses!</div>
         </div>
-        <div class="card">
+
+        <div class="card" data-region="South India">
             <h2>🌊 Tamil Nadu</h2>
+            <p class="capital">🏛️ Capital: Chennai</p>
             <span class="tag">South India</span>
             <div class="dish"><span>Dosa & Sambar</span> - Classic combo</div>
             <div class="dish"><span>Chettinad Chicken</span> - Spicy special</div>
             <div class="dish"><span>Filter Coffee</span> - Must have!</div>
+            <div class="restaurant"><span>🍽️ Murugan Idli Shop</span> - Best idli</div>
+            <div class="restaurant"><span>🍽️ Saravana Bhavan</span> - World famous</div>
             <p class="price">💰 Budget: ₹50-200 per meal</p>
+            <div class="tip">💡 Tip: Eat on banana leaf - traditional experience!</div>
+        </div>
+
+        <div class="card" data-region="West India">
+            <h2>🏙️ Maharashtra</h2>
+            <p class="capital">🏛️ Capital: Mumbai</p>
+            <span class="tag">West India</span>
+            <div class="dish"><span>Vada Pav</span> - Mumbai's burger!</div>
+            <div class="dish"><span>Puran Poli</span> - Sweet flatbread</div>
+            <div class="dish"><span>Misal Pav</span> - Spicy sprouts</div>
+            <div class="restaurant"><span>🍽️ Café Madras, Mumbai</span> - Best South Indian</div>
+            <div class="restaurant"><span>🍽️ Trishna Restaurant</span> - Best seafood</div>
+            <p class="price">💰 Budget: ₹50-300 per meal</p>
+            <div class="tip">💡 Tip: Try vada pav at Ashok Vada Pav - iconic!</div>
+        </div>
+
+        <div class="card" data-region="North India">
+            <h2>🕍 Uttar Pradesh</h2>
+            <p class="capital">🏛️ Capital: Lucknow</p>
+            <span class="tag">North India</span>
+            <div class="dish"><span>Lucknowi Biryani</span> - Awadhi style</div>
+            <div class="dish"><span>Galouti Kebab</span> - Melt in mouth!</div>
+            <div class="dish"><span>Basket Chaat</span> - Street food</div>
+            <div class="restaurant"><span>🍽️ Tunday Kababi</span> - Since 1905!</div>
+            <div class="restaurant"><span>🍽️ Rahim's, Lucknow</span> - Best nihari</div>
+            <p class="price">💰 Budget: ₹80-300 per meal</p>
+            <div class="tip">💡 Tip: Visit Hazratganj for best street food!</div>
         </div>
     </div>
 
+    <div id="noResults">😔 No results found. Try another search!</div>
+
     <footer>
-        <p>🍛 India Food Map | Made with ❤️ for tourists</p>
+        <p>🍛 India Food Map | Made with ❤️ for tourists | © 2026</p>
     </footer>
 
     <script>
         function searchFood() {
             var input = document.getElementById('search').value.toLowerCase();
             var cards = document.getElementsByClassName('card');
+            var found = 0;
             for (var i = 0; i < cards.length; i++) {
                 if (cards[i].innerText.toLowerCase().includes(input)) {
+                    cards[i].style.display = 'block';
+                    found++;
+                } else {
+                    cards[i].style.display = 'none';
+                }
+            }
+            document.getElementById('noResults').style.display = found === 0 ? 'block' : 'none';
+        }
+
+        function filterRegion(region) {
+            var cards = document.getElementsByClassName('card');
+            var buttons = document.getElementsByClassName('filter')[0].getElementsByTagName('button');
+            for (var b = 0; b < buttons.length; b++) buttons[b].classList.remove('active');
+            event.target.classList.add('active');
+            for (var i = 0; i < cards.length; i++) {
+                if (region === 'all' || cards[i].getAttribute('data-region') === region) {
                     cards[i].style.display = 'block';
                 } else {
                     cards[i].style.display = 'none';
                 }
             }
         }
+
+        document.getElementById('search').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') searchFood();
+        });
     </script>
 </body>
 </html>
