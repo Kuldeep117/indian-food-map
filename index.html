@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
@@ -360,3 +360,581 @@
             <div class="section-label">🍽 Must Try Dishes</div>
             <div class="dish"><span>Butter Chicken</span> — Born in Punjab!</div>
             <div class="dish"><span>Sarson Da Saag</span> — Winter special with makki roti</div>
+            <div class="dish"><span>Amritsari Kulcha</span> — Stuffed bread delight</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Kesar Da Dhaba, Amritsar</span> — Since 1916!</div>
+            <div class="restaurant"><span>Brothers Dhaba</span> — Local favourite</div>
+            <p class="price">💰 ₹100–400 per meal</p>
+            <div class="tip">💡 Free langar at Golden Temple — tastiest meal you'll ever have!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+food+amritsar+punjab+india" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-punjab"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-punjab">
+                    <textarea placeholder="Share your food experience..." id="review-punjab"></textarea>
+                    <button class="btn-small" onclick="addReview('punjab')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANDHRA PRADESH -->
+    <div class="card" data-region="South">
+        <div class="card-photo" style="background:linear-gradient(135deg,#1a0a00,#2a1000)">
+            <div class="card-photo-placeholder">🌶️</div>
+            <div class="region-badge">South India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🌶️ Andhra Pradesh</h2><p class="capital">🏛️ Amaravati</p></div></div>
+            <div class="star-rating" data-state="andhra">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Hyderabadi Biryani</span> — World famous!</div>
+            <div class="dish"><span>Pesarattu</span> — Green moong dosa</div>
+            <div class="dish"><span>Gongura Pickle</span> — Tangy sorrel chutney</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Paradise Restaurant</span> — Best biryani since 1953</div>
+            <div class="restaurant"><span>Bawarchi Restaurant</span> — Iconic biryani</div>
+            <p class="price">💰 ₹80–350 per meal</p>
+            <div class="tip">💡 Order biryani with mirchi ka salan and raita!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=paradise+restaurant+hyderabad" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-andhra"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-andhra">
+                    <textarea placeholder="Share your food experience..." id="review-andhra"></textarea>
+                    <button class="btn-small" onclick="addReview('andhra')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEST BENGAL -->
+    <div class="card" data-region="East">
+        <div class="card-photo" style="background:linear-gradient(135deg,#001a1a,#001010)">
+            <div class="card-photo-placeholder">🐟</div>
+            <div class="region-badge">East India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🐟 West Bengal</h2><p class="capital">🏛️ Kolkata</p></div></div>
+            <div class="star-rating" data-state="bengal">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Hilsa Fish Curry</span> — Bengali pride dish</div>
+            <div class="dish"><span>Mishti Doi</span> — Sweet caramel yogurt</div>
+            <div class="dish"><span>Kathi Roll</span> — Kolkata street food legend</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>6 Ballygunge Place</span> — Best Bengali cuisine</div>
+            <div class="restaurant"><span>Arsalan Restaurant</span> — Best Kolkata biryani</div>
+            <p class="price">💰 ₹60–250 per meal</p>
+            <div class="tip">💡 Try rosogolla at KC Das — the original shop since 1866!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+food+kolkata+west+bengal" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-bengal"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-bengal">
+                    <textarea placeholder="Share your food experience..." id="review-bengal"></textarea>
+                    <button class="btn-small" onclick="addReview('bengal')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KASHMIR -->
+    <div class="card" data-region="North">
+        <div class="card-photo" style="background:linear-gradient(135deg,#001a2a,#0a0a2a)">
+            <div class="card-photo-placeholder">🏔️</div>
+            <div class="region-badge">North India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🏔️ Kashmir</h2><p class="capital">🏛️ Srinagar</p></div></div>
+            <div class="star-rating" data-state="kashmir">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Rogan Josh</span> — Aromatic braised mutton</div>
+            <div class="dish"><span>Yakhni</span> — Delicate yogurt curry</div>
+            <div class="dish"><span>Kahwa Tea</span> — Saffron green tea</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Ahdoos Restaurant</span> — Since 1918, legendary</div>
+            <div class="restaurant"><span>Mughal Darbar</span> — Best Wazwan feast</div>
+            <p class="price">💰 ₹100–400 per meal</p>
+            <div class="tip">💡 Try full Wazwan — 36-course feast — a once-in-a-lifetime experience!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+food+restaurants+srinagar+kashmir" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-kashmir"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-kashmir">
+                    <textarea placeholder="Share your food experience..." id="review-kashmir"></textarea>
+                    <button class="btn-small" onclick="addReview('kashmir')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAMIL NADU -->
+    <div class="card" data-region="South">
+        <div class="card-photo" style="background:linear-gradient(135deg,#0a1a00,#0a0a00)">
+            <div class="card-photo-placeholder">🌊</div>
+            <div class="region-badge">South India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🌊 Tamil Nadu</h2><p class="capital">🏛️ Chennai</p></div></div>
+            <div class="star-rating" data-state="tamilnadu">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Dosa & Sambar</span> — Crispy classic combo</div>
+            <div class="dish"><span>Chettinad Chicken</span> — Boldest spice mix in India</div>
+            <div class="dish"><span>Filter Coffee</span> — Frothy south Indian coffee</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Murugan Idli Shop</span> — Softest idli ever</div>
+            <div class="restaurant"><span>Saravana Bhavan</span> — World famous chain</div>
+            <p class="price">💰 ₹50–200 per meal</p>
+            <div class="tip">💡 Eat on banana leaf — the traditional way. Adds real flavour!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+food+restaurants+chennai+tamil+nadu" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-tamilnadu"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-tamilnadu">
+                    <textarea placeholder="Share your food experience..." id="review-tamilnadu"></textarea>
+                    <button class="btn-small" onclick="addReview('tamilnadu')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAHARASHTRA -->
+    <div class="card" data-region="West">
+        <div class="card-photo" style="background:linear-gradient(135deg,#1a0a1a,#0a0a1a)">
+            <div class="card-photo-placeholder">🏙️</div>
+            <div class="region-badge">West India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🏙️ Maharashtra</h2><p class="capital">🏛️ Mumbai</p></div></div>
+            <div class="star-rating" data-state="maharashtra">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Vada Pav</span> — Mumbai's answer to the burger</div>
+            <div class="dish"><span>Misal Pav</span> — Spicy sprouted curry</div>
+            <div class="dish"><span>Puran Poli</span> — Sweet stuffed flatbread</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Cafe Madras, Mumbai</span> — Best South Indian</div>
+            <div class="restaurant"><span>Trishna Restaurant</span> — Finest seafood</div>
+            <p class="price">💰 ₹50–300 per meal</p>
+            <div class="tip">💡 Vada Pav at Ashok Vada Pav, Dadar — the most iconic stall!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+street+food+mumbai+maharashtra" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-maharashtra"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-maharashtra">
+                    <textarea placeholder="Share your food experience..." id="review-maharashtra"></textarea>
+                    <button class="btn-small" onclick="addReview('maharashtra')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UTTAR PRADESH -->
+    <div class="card" data-region="North">
+        <div class="card-photo" style="background:linear-gradient(135deg,#1a1000,#0a0a00)">
+            <div class="card-photo-placeholder">🕍</div>
+            <div class="region-badge">North India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🕍 Uttar Pradesh</h2><p class="capital">🏛️ Lucknow</p></div></div>
+            <div class="star-rating" data-state="up">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Lucknowi Biryani</span> — Dum style, Awadhi perfection</div>
+            <div class="dish"><span>Galouti Kebab</span> — Melts in your mouth</div>
+            <div class="dish"><span>Basket Chaat</span> — Crispy edible bowl chaat</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Tunday Kababi</span> — Since 1905, legendary!</div>
+            <div class="restaurant"><span>Rahim's, Lucknow</span> — Best nihari kulcha</div>
+            <p class="price">💰 ₹80–300 per meal</p>
+            <div class="tip">💡 Hazratganj area has the best street food concentration!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=tunday+kababi+lucknow" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-up"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-up">
+                    <textarea placeholder="Share your food experience..." id="review-up"></textarea>
+                    <button class="btn-small" onclick="addReview('up')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUJARAT -->
+    <div class="card" data-region="West">
+        <div class="card-photo" style="background:linear-gradient(135deg,#1a0a00,#1a1a00)">
+            <div class="card-photo-placeholder">🥘</div>
+            <div class="region-badge">West India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🥘 Gujarat</h2><p class="capital">🏛️ Gandhinagar</p></div></div>
+            <div class="star-rating" data-state="gujarat">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Dhokla</span> — Steamed fermented snack</div>
+            <div class="dish"><span>Thepla</span> — Spiced flatbread, perfect travel food</div>
+            <div class="dish"><span>Undhiyu</span> — Winter mixed vegetable dish</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Agashiye, Ahmedabad</span> — Rooftop thali experience</div>
+            <div class="restaurant"><span>Gordhan Thal</span> — Best Gujarati thali</div>
+            <p class="price">💰 ₹60–250 per meal</p>
+            <div class="tip">💡 Gujarati thali is unlimited — eat as much as you want!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+gujarati+thali+ahmedabad" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-gujarat"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-gujarat">
+                    <textarea placeholder="Share your food experience..." id="review-gujarat"></textarea>
+                    <button class="btn-small" onclick="addReview('gujarat')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MADHYA PRADESH -->
+    <div class="card" data-region="Central">
+        <div class="card-photo" style="background:linear-gradient(135deg,#0a1a00,#001a0a)">
+            <div class="card-photo-placeholder">🌿</div>
+            <div class="region-badge">Central India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🌿 Madhya Pradesh</h2><p class="capital">🏛️ Bhopal</p></div></div>
+            <div class="star-rating" data-state="mp">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Poha Jalebi</span> — Classic MP breakfast combo</div>
+            <div class="dish"><span>Bhutte Ka Kees</span> — Grated corn snack</div>
+            <div class="dish"><span>Dal Bafla</span> — MP version of Dal Baati</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Chappan Dukan, Indore</span> — 56 food stalls!</div>
+            <div class="restaurant"><span>Sarafa Bazaar</span> — Night food market</div>
+            <p class="price">💰 ₹40–180 per meal</p>
+            <div class="tip">💡 Indore is ranked India's cleanest city AND best street food city!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=chappan+dukan+indore+madhya+pradesh" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-mp"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-mp">
+                    <textarea placeholder="Share your food experience..." id="review-mp"></textarea>
+                    <button class="btn-small" onclick="addReview('mp')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ODISHA -->
+    <div class="card" data-region="East">
+        <div class="card-photo" style="background:linear-gradient(135deg,#001a1a,#0a1a00)">
+            <div class="card-photo-placeholder">🏛️</div>
+            <div class="region-badge">East India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🏛️ Odisha</h2><p class="capital">🏛️ Bhubaneswar</p></div></div>
+            <div class="star-rating" data-state="odisha">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Dalma</span> — Lentils with vegetables</div>
+            <div class="dish"><span>Pakhala Bhata</span> — Fermented rice dish</div>
+            <div class="dish"><span>Chhena Poda</span> — Caramelised cottage cheese dessert</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Hare Krishna Restaurant</span> — Prasad style food</div>
+            <div class="restaurant"><span>Dalma Restaurant</span> — Best Odia cuisine</div>
+            <p class="price">💰 ₹50–180 per meal</p>
+            <div class="tip">💡 Try prasad at Jagannath Temple in Puri — divine taste!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+food+bhubaneswar+odisha" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-odisha"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-odisha">
+                    <textarea placeholder="Share your food experience..." id="review-odisha"></textarea>
+                    <button class="btn-small" onclick="addReview('odisha')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASSAM -->
+    <div class="card" data-region="Northeast">
+        <div class="card-photo" style="background:linear-gradient(135deg,#001a00,#001a0a)">
+            <div class="card-photo-placeholder">🍵</div>
+            <div class="region-badge">Northeast India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🍵 Assam</h2><p class="capital">🏛️ Dispur</p></div></div>
+            <div class="star-rating" data-state="assam">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Assam Tea</span> — World's finest black tea</div>
+            <div class="dish"><span>Masor Tenga</span> — Sour fish curry</div>
+            <div class="dish"><span>Pitha</span> — Rice cake festival sweet</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Paradise Restaurant, Guwahati</span> — Best Assamese</div>
+            <div class="restaurant"><span>Ilish Truly Bong</span> — Best fish dishes</div>
+            <p class="price">💰 ₹60–200 per meal</p>
+            <div class="tip">💡 Visit a tea estate — drink tea plucked same morning!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+food+guwahati+assam" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-assam"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-assam">
+                    <textarea placeholder="Share your food experience..." id="review-assam"></textarea>
+                    <button class="btn-small" onclick="addReview('assam')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HIMACHAL PRADESH -->
+    <div class="card" data-region="North">
+        <div class="card-photo" style="background:linear-gradient(135deg,#001020,#001530)">
+            <div class="card-photo-placeholder">⛰️</div>
+            <div class="region-badge">North India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>⛰️ Himachal Pradesh</h2><p class="capital">🏛️ Shimla</p></div></div>
+            <div class="star-rating" data-state="himachal">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Siddu</span> — Stuffed wheat bread</div>
+            <div class="dish"><span>Dham</span> — Traditional feast dish</div>
+            <div class="dish"><span>Babru</span> — Black gram stuffed kachori</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>Cafe Simla Times</span> — Colonial era cafe</div>
+            <div class="restaurant"><span>Ashiana & Goofa, Shimla</span> — Best views + food</div>
+            <p class="price">💰 ₹80–300 per meal</p>
+            <div class="tip">💡 Eat at roadside dhabas between Manali and Rohtang — best momos!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=best+food+shimla+manali+himachal" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-himachal"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-himachal">
+                    <textarea placeholder="Share your food experience..." id="review-himachal"></textarea>
+                    <button class="btn-small" onclick="addReview('himachal')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KARNATAKA -->
+    <div class="card" data-region="South">
+        <div class="card-photo" style="background:linear-gradient(135deg,#0a0a1a,#1a0a00)">
+            <div class="card-photo-placeholder">🥗</div>
+            <div class="region-badge">South India</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header"><div><h2>🥗 Karnataka</h2><p class="capital">🏛️ Bengaluru</p></div></div>
+            <div class="star-rating" data-state="karnataka">
+                <span class="star filled" onclick="rateStar(this,1)">★</span>
+                <span class="star filled" onclick="rateStar(this,2)">★</span>
+                <span class="star filled" onclick="rateStar(this,3)">★</span>
+                <span class="star filled" onclick="rateStar(this,4)">★</span>
+                <span class="star filled" onclick="rateStar(this,5)">★</span>
+            </div>
+            <div class="section-label">🍽 Must Try Dishes</div>
+            <div class="dish"><span>Bisi Bele Bath</span> — Hot lentil rice dish</div>
+            <div class="dish"><span>Mysore Pak</span> — Rich ghee sweet</div>
+            <div class="dish"><span>Ragi Mudde</span> — Finger millet ball</div>
+            <div class="section-label">🏪 Best Restaurants</div>
+            <div class="restaurant"><span>MTR, Bengaluru</span> — Since 1924, legendary!</div>
+            <div class="restaurant"><span>CTR Shivajinagar</span> — Best benne masala dosa</div>
+            <p class="price">💰 ₹60–250 per meal</p>
+            <div class="tip">💡 Queue at CTR at 8am for the world's best butter masala dosa!</div>
+            <a class="maps-btn" href="https://maps.google.com/?q=MTR+restaurant+bengaluru+karnataka" target="_blank">📍 View on Maps</a>
+            <div class="reviews-section">
+                <div class="section-label">💬 Traveller Reviews</div>
+                <div id="reviews-karnataka"></div>
+                <div class="review-form">
+                    <input type="text" placeholder="Your name" id="name-karnataka">
+                    <textarea placeholder="Share your food experience..." id="review-karnataka"></textarea>
+                    <button class="btn-small" onclick="addReview('karnataka')">Post Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="noResults">😔 No results found. Try a different search!</div>
+
+<footer>
+    <p>🍛 India Food Map &nbsp;|&nbsp; Made with ❤️ for travellers &nbsp;|&nbsp; © 2026</p>
+    <p style="margin-top:8px; font-size:12px;">Discover India one dish at a time 🇮🇳</p>
+</footer>
+
+<script>
+    // Theme
+    function toggleTheme() {
+        var html = document.documentElement;
+        var btn = document.querySelector('.theme-btn');
+        if (html.getAttribute('data-theme') === 'dark') {
+            html.setAttribute('data-theme', 'light');
+            btn.textContent = '☀️';
+        } else {
+            html.setAttribute('data-theme', 'dark');
+            btn.textContent = '🌙';
+        }
+    }
+
+    // Search
+    function searchFood() {
+        var input = document.getElementById('search').value.toLowerCase();
+        var cards = document.getElementsByClassName('card');
+        var found = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (cards[i].innerText.toLowerCase().includes(input)) {
+                cards[i].style.display = '';
+                found++;
+            } else {
+                cards[i].style.display = 'none';
+            }
+        }
+        document.getElementById('noResults').style.display = found === 0 ? 'block' : 'none';
+    }
+
+    function clearSearch() {
+        document.getElementById('search').value = '';
+        searchFood();
+    }
+
+    document.getElementById('search').addEventListener('keyup', function(e) {
+        searchFood();
+    });
+
+    // Filter
+    function filterRegion(region, btn) {
+        var cards = document.getElementsByClassName('card');
+        var buttons = document.querySelectorAll('.filter-row button');
+        buttons.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.getElementById('search').value = '';
+        var found = 0;
+        for (var i = 0; i < cards.length; i++) {
+            if (region === 'all' || cards[i].getAttribute('data-region') === region) {
+                cards[i].style.display = '';
+                found++;
+            } else {
+                cards[i].style.display = 'none';
+            }
+        }
+        document.getElementById('noResults').style.display = found === 0 ? 'block' : 'none';
+    }
+
+    // Star rating
+    function rateStar(clickedStar, num) {
+        var container = clickedStar.parentElement;
+        var stars = container.getElementsByClassName('star');
+        for (var i = 0; i < stars.length; i++) {
+            if (i < num) {
+                stars[i].classList.add('filled');
+            } else {
+                stars[i].classList.remove('filled');
+            }
+        }
+    }
+
+    // Reviews
+    var reviews = {};
+    function addReview(state) {
+        var name = document.getElementById('name-' + state).value.trim();
+        var text = document.getElementById('review-' + state).value.trim();
+        if (!name || !text) { alert('Please enter your name and review!'); return; }
+        if (!reviews[state]) reviews[state] = [];
+        reviews[state].push({ name: name, text: text });
+        renderReviews(state);
+        document.getElementById('name-' + state).value = '';
+        document.getElementById('review-' + state).value = '';
+    }
+
+    function renderReviews(state) {
+        var container = document.getElementById('reviews-' + state);
+        if (!container) return;
+        container.innerHTML = '';
+        if (reviews[state]) {
+            reviews[state].forEach(function(r) {
+                var div = document.createElement('div');
+                div.className = 'review-item';
+                div.innerHTML = '<div class="review-name">👤 ' + r.name + '</div><div class="review-text">' + r.text + '</div>';
+                container.appendChild(div);
+            });
+        }
+    }
+
+    // Back to top
+    window.addEventListener('scroll', function() {
+        document.getElementById('backTop').style.display = window.scrollY > 400 ? 'flex' : 'none';
+    });
+    document.getElementById('backTop').style.cssText += 'align-items:center;justify-content:center;';
+</script>
+</body>
+</html>
