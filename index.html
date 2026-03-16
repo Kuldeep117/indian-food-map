@@ -1,941 +1,241 @@
 !DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
- <meta name="google-site-verification" content="cwcRYXxJ-5KEMsOWnrDBJ3daEiXQv_33reKWr274TTw" />   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>India Food Map 🍛</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #080810;
-            --card-bg: #0f0f1e;
-            --card-border: #e9456030;
-            --text: #f0f0f0;
-            --subtext: #888;
-            --accent: #e94560;
-            --accent2: #ff9900;
-            --accent3: #00d4ff;
-            --dish-bg: #0a0a18;
-            --input-bg: #0f0f1e;
-        }
-        [data-theme="light"] {
-            --bg: #faf7f2;
-            --card-bg: #ffffff;
-            --card-border: #e9456020;
-            --text: #1a1a2e;
-            --subtext: #666;
-            --accent: #c0392b;
-            --accent2: #e67e00;
-            --accent3: #0077aa;
-            --dish-bg: #f5f0e8;
-            --input-bg: #ffffff;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); transition: all 0.3s; }
-
-        /* HEADER */
-        header {
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a0a2e 50%, #0f1e1e 100%);
-            padding: 60px 20px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid var(--accent);
-        }
-        [data-theme="light"] header { background: linear-gradient(135deg, #fff5e6, #ffe8cc); }
-        .header-bg {
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 30% 50%, rgba(233,69,96,0.15) 0%, transparent 50%),
-                        radial-gradient(ellipse at 70% 50%, rgba(0,212,255,0.1) 0%, transparent 50%);
-            animation: headerPulse 4s ease-in-out infinite;
-        }
-        @keyframes headerPulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2em, 6vw, 4em);
-            background: linear-gradient(135deg, #e94560, #ff9900, #e94560);
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s linear infinite, fadeDown 0.8s ease;
-            position: relative;
-        }
-        @keyframes shimmer { to { background-position: 200% center; } }
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        header p { color: var(--subtext); margin-top: 10px; font-size: 1.1em; position: relative; animation: fadeDown 0.8s ease 0.2s both; }
-        .stats { display: flex; justify-content: center; gap: 30px; margin-top: 20px; position: relative; }
-        .stat { text-align: center; }
-        .stat-num { font-size: 1.8em; font-weight: bold; color: var(--accent); }
-        .stat-label { font-size: 0.75em; color: var(--subtext); }
-
-        /* CONTROLS */
-        .controls { background: var(--dish-bg); padding: 20px; border-bottom: 1px solid var(--card-border); }
-        .search-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .search-row input {
-            padding: 12px 20px; width: 320px;
-            border-radius: 50px; border: 2px solid var(--accent);
-            background: var(--input-bg); color: var(--text);
-            font-size: 15px; outline: none; font-family: 'DM Sans', sans-serif;
-            transition: box-shadow 0.3s;
-        }
-        .search-row input:focus { box-shadow: 0 0 20px rgba(233,69,96,0.3); }
-        .btn { padding: 12px 22px; border-radius: 50px; border: none; cursor: pointer; font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
-        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(233,69,96,0.4); }
-        .btn-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
-        .btn-outline:hover, .btn-outline.active { background: var(--accent); color: white; }
-        .filter-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-
-        /* GRID */
-        .states { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 25px; max-width: 1400px; margin: 0 auto; }
-
-        /* CARD */
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--card-border);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: slideUp 0.5s ease both;
-        }
-        .card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(233,69,96,0.2); border-color: var(--accent); }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .card-photo {
-            width: 100%; height: 160px; object-fit: cover;
-            background: linear-gradient(135deg, #1a1a2e, #0f3460);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 4em; position: relative;
-        }
-        .card-photo img { width: 100%; height: 100%; object-fit: cover; }
-        .card-photo-placeholder { font-size: 4em; }
-        .region-badge {
-            position: absolute; top: 10px; right: 10px;
-            background: rgba(0,0,0,0.7); color: white;
-            padding: 3px 10px; border-radius: 20px; font-size: 11px;
-            backdrop-filter: blur(5px);
-        }
-        .card-body { padding: 16px; }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .card h2 { font-family: 'Playfair Display', serif; font-size: 1.25em; color: var(--accent); }
-        .capital { color: var(--subtext); font-size: 12px; margin-bottom: 8px; }
-        
-        /* Stars */
-        .star-rating { display: flex; gap: 3px; margin: 6px 0; }
-        .star { font-size: 16px; cursor: pointer; transition: transform 0.1s; color: #444; }
-        .star.filled { color: #ffd700; }
-        .star:hover { transform: scale(1.3); }
-
-        /* Dishes */
-        .section-label { font-size: 11px; font-weight: 600; color: var(--subtext); text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 5px; }
-        .dish { background: var(--dish-bg); padding: 7px 10px; margin: 4px 0; border-radius: 8px; font-size: 13px; border-left: 3px solid var(--accent2); }
-        .dish span { font-weight: 600; color: var(--accent2); }
-        .restaurant { background: var(--dish-bg); padding: 7px 10px; margin: 4px 0; border-radius: 8px; font-size: 13px; border-left: 3px solid var(--accent3); }
-        .restaurant span { color: var(--accent3); font-weight: 600; }
-        .price { color: #00b894; font-size: 13px; margin-top: 8px; font-weight: 500; }
-        .tip { background: rgba(0,184,148,0.08); padding: 8px 10px; margin-top: 8px; border-radius: 8px; font-size: 12px; color: #00b894; border-left: 3px solid #00b894; }
-        
-        /* Maps button */
-        .maps-btn {
-            display: inline-block; margin-top: 10px;
-            padding: 7px 14px; border-radius: 20px;
-            background: transparent; border: 1px solid var(--accent3);
-            color: var(--accent3); font-size: 12px; text-decoration: none;
-            transition: all 0.2s;
-        }
-        .maps-btn:hover { background: var(--accent3); color: white; }
-
-        /* Reviews */
-        .reviews-section { margin-top: 12px; border-top: 1px solid var(--card-border); padding-top: 12px; }
-        .review-item { background: var(--dish-bg); padding: 8px 10px; margin: 5px 0; border-radius: 8px; font-size: 12px; }
-        .review-name { font-weight: 600; color: var(--accent); font-size: 12px; }
-        .review-text { color: var(--text); margin-top: 2px; }
-        .review-form { margin-top: 8px; }
-        .review-form input, .review-form textarea {
-            width: 100%; padding: 7px 10px; border-radius: 8px;
-            border: 1px solid var(--card-border); background: var(--dish-bg);
-            color: var(--text); font-size: 12px; margin-bottom: 5px;
-            font-family: 'DM Sans', sans-serif; resize: none;
-        }
-        .review-form textarea { height: 55px; }
-        .btn-small { padding: 6px 14px; font-size: 12px; border-radius: 20px; border: none; background: var(--accent); color: white; cursor: pointer; }
-
-        /* Fixed buttons */
-        .theme-btn {
-            position: fixed; top: 15px; right: 15px;
-            background: var(--card-bg); border: 1px solid var(--accent);
-            color: var(--text); border-radius: 50%; width: 44px; height: 44px;
-            font-size: 18px; cursor: pointer; z-index: 1000;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
-        }
-        .back-top {
-            position: fixed; bottom: 25px; right: 15px;
-            background: var(--accent); color: white; border: none;
-            border-radius: 50%; width: 46px; height: 46px;
-            font-size: 18px; cursor: pointer; display: none; z-index: 1000;
-            box-shadow: 0 3px 15px rgba(233,69,96,0.4);
-        }
-
-        #noResults { display: none; text-align: center; color: var(--subtext); padding: 60px; font-size: 1.2em; }
-        footer { background: var(--dish-bg); color: var(--subtext); text-align: center; padding: 30px; border-top: 1px solid var(--card-border); font-size: 14px; }
-        footer a { color: var(--accent); text-decoration: none; }
-
-        @media (max-width: 600px) {
-            .search-row input { width: 100%; }
-            .stats { gap: 15px; }
-        }
+        :root { --bg:#080810;--card-bg:#0f0f1e;--card-border:#e9456030;--text:#f0f0f0;--subtext:#888;--accent:#e94560;--accent2:#ff9900;--accent3:#00d4ff;--dish-bg:#0a0a18;--input-bg:#0f0f1e; }
+        [data-theme="light"] { --bg:#faf7f2;--card-bg:#fff;--card-border:#e9456020;--text:#1a1a2e;--subtext:#666;--accent:#c0392b;--accent2:#e67e00;--accent3:#0077aa;--dish-bg:#f5f0e8;--input-bg:#fff; }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:all .3s}
+        header{background:linear-gradient(135deg,#0f0f1e,#1a0a2e,#0f1e1e);padding:60px 20px 40px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--accent)}
+        [data-theme="light"] header{background:linear-gradient(135deg,#fff5e6,#ffe8cc)}
+        .header-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(233,69,96,.15),transparent 50%),radial-gradient(ellipse at 70% 50%,rgba(0,212,255,.1),transparent 50%);animation:hpulse 4s ease-in-out infinite}
+        @keyframes hpulse{0%,100%{opacity:.7}50%{opacity:1}}
+        header h1{font-family:'Playfair Display',serif;font-size:clamp(2em,6vw,4em);background:linear-gradient(135deg,#e94560,#ff9900,#e94560);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite,fadeDown .8s ease;position:relative}
+        @keyframes shimmer{to{background-position:200% center}}
+        @keyframes fadeDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+        header p{color:var(--subtext);margin-top:10px;font-size:1.1em;position:relative}
+        .stats{display:flex;justify-content:center;gap:20px;margin-top:20px;position:relative;flex-wrap:wrap;align-items:center}
+        .stat{text-align:center}.stat-num{font-size:1.8em;font-weight:700;color:var(--accent)}.stat-label{font-size:.75em;color:var(--subtext)}
+        .controls{background:var(--dish-bg);padding:20px;border-bottom:1px solid var(--card-border)}
+        .search-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+        .search-row input{padding:12px 20px;width:300px;border-radius:50px;border:2px solid var(--accent);background:var(--input-bg);color:var(--text);font-size:15px;outline:none;transition:box-shadow .3s}
+        .search-row input:focus{box-shadow:0 0 20px rgba(233,69,96,.3)}
+        .btn{padding:10px 18px;border-radius:50px;border:none;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .2s}
+        .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}.btn-primary:hover{transform:scale(1.05)}
+        .btn-outline{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
+        .btn-outline:hover,.btn-outline.active{background:var(--accent);color:#fff}
+        .btn-green{background:transparent;border:1.5px solid #00b894;color:#00b894}
+        .btn-green:hover,.btn-green.active{background:#00b894;color:#fff}
+        .btn-red{background:transparent;border:1.5px solid #e94560;color:#e94560}
+        .btn-red:hover,.btn-red.active{background:#e94560;color:#fff}
+        .btn-wa{background:#25D366;color:#fff;border:none}.btn-print{background:#555;color:#fff;border:none}
+        .filter-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+        .sort-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+        .sort-row select{padding:8px 14px;border-radius:20px;border:1.5px solid var(--accent);background:var(--input-bg);color:var(--text);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+        .states{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;padding:25px;max-width:1400px;margin:0 auto}
+        .card{background:var(--card-bg);border-radius:16px;border:1px solid var(--card-border);overflow:hidden;transition:transform .3s,box-shadow .3s;animation:slideUp .5s ease both}
+        .card:hover{transform:translateY(-6px);box-shadow:0 15px 40px rgba(233,69,96,.2);border-color:var(--accent)}
+        @keyframes slideUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+        .card-photo{width:100%;height:160px;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;align-items:center;justify-content:center;font-size:4em;position:relative;overflow:hidden}
+        .card-photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+        .card-photo-emoji{position:relative;z-index:1}
+        .region-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;backdrop-filter:blur(5px);z-index:2}
+        .veg-badge{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;z-index:2}
+        .veg-badge.veg{background:rgba(0,184,148,.9);color:#fff}.veg-badge.nonveg{background:rgba(233,69,96,.9);color:#fff}.veg-badge.both{background:rgba(255,153,0,.9);color:#fff}
+        .card-body{padding:16px}
+        .card h2{font-family:'Playfair Display',serif;font-size:1.2em;color:var(--accent)}
+        .capital{color:var(--subtext);font-size:12px;margin-bottom:6px}
+        .star-rating{display:flex;gap:3px;margin:5px 0;align-items:center}
+        .star{font-size:16px;cursor:pointer;transition:transform .1s;color:#444}.star.filled{color:#ffd700}.star:hover{transform:scale(1.3)}
+        .rating-count{font-size:11px;color:var(--subtext);margin-left:5px}
+        .section-label{font-size:11px;font-weight:600;color:var(--subtext);text-transform:uppercase;letter-spacing:1px;margin:10px 0 4px}
+        .dish{background:var(--dish-bg);padding:6px 10px;margin:3px 0;border-radius:8px;font-size:13px;border-left:3px solid var(--accent2)}
+        .dish span{font-weight:600;color:var(--accent2)}
+        .dish.veg-dish{border-left-color:#00b894}.dish.veg-dish span{color:#00b894}
+        .dish.nonveg-dish{border-left-color:#e94560}.dish.nonveg-dish span{color:#e94560}
+        .restaurant{background:var(--dish-bg);padding:6px 10px;margin:3px 0;border-radius:8px;font-size:13px;border-left:3px solid var(--accent3)}
+        .restaurant span{color:var(--accent3);font-weight:600}
+        .price{color:#00b894;font-size:13px;margin-top:8px;font-weight:500}
+        .tip{background:rgba(0,184,148,.08);padding:7px 10px;margin-top:7px;border-radius:8px;font-size:12px;color:#00b894;border-left:3px solid #00b894}
+        .gallery{display:flex;gap:5px;margin-top:8px;overflow-x:auto;padding-bottom:4px}
+        .gallery img{width:70px;height:55px;object-fit:cover;border-radius:8px;cursor:pointer;flex-shrink:0;transition:transform .2s}.gallery img:hover{transform:scale(1.1)}
+        .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;align-items:center;justify-content:center}
+        .lightbox.open{display:flex}.lightbox img{max-width:90vw;max-height:85vh;border-radius:12px}
+        .lightbox-close{position:absolute;top:20px;right:25px;color:#fff;font-size:2em;cursor:pointer}
+        .maps-btn{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:20px;background:transparent;border:1px solid var(--accent3);color:var(--accent3);font-size:12px;text-decoration:none;transition:all .2s}
+        .maps-btn:hover{background:var(--accent3);color:#fff}
+        .card-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+        .btn-wa-small{padding:5px 12px;font-size:12px;border-radius:20px;border:none;background:#25D366;color:#fff;cursor:pointer}
+        .reviews-section{margin-top:10px;border-top:1px solid var(--card-border);padding-top:10px}
+        .review-item{background:var(--dish-bg);padding:7px 10px;margin:4px 0;border-radius:8px;font-size:12px}
+        .review-name{font-weight:600;color:var(--accent);font-size:12px}.review-stars{color:#ffd700;font-size:11px}
+        .review-text{color:var(--text);margin-top:2px;line-height:1.4}
+        .review-form{margin-top:8px}
+        .review-form input,.review-form textarea{width:100%;padding:7px 10px;border-radius:8px;border:1px solid var(--card-border);background:var(--dish-bg);color:var(--text);font-size:12px;margin-bottom:5px;font-family:'DM Sans',sans-serif;resize:none;outline:none}
+        .review-form textarea{height:50px}
+        .btn-small{padding:6px 14px;font-size:12px;border-radius:20px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+        .theme-btn{position:fixed;top:15px;right:15px;background:var(--card-bg);border:1px solid var(--accent);color:var(--text);border-radius:50%;width:44px;height:44px;font-size:18px;cursor:pointer;z-index:1000;box-shadow:0 3px 15px rgba(0,0,0,.3)}
+        .back-top{position:fixed;bottom:25px;right:15px;background:var(--accent);color:#fff;border:none;border-radius:50%;width:46px;height:46px;font-size:18px;cursor:pointer;display:none;z-index:1000;align-items:center;justify-content:center}
+        #noResults{display:none;text-align:center;color:var(--subtext);padding:60px;font-size:1.2em}
+        footer{background:var(--dish-bg);color:var(--subtext);text-align:center;padding:30px;border-top:1px solid var(--card-border);font-size:14px}
+        @media print{.theme-btn,.back-top,.controls,.review-form,.card-actions{display:none!important}.card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}header{background:#fff!important}header h1{-webkit-text-fill-color:#e94560!important}}
+        @media(max-width:600px){.search-row input{width:100%}.stats{gap:15px}}
     </style>
 </head>
 <body>
-
-<button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><span class="lightbox-close">✕</span><img id="lightbox-img" src="" alt=""></div>
+<button class="theme-btn" onclick="toggleTheme()">🌙</button>
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆</button>
-
 <header>
     <div class="header-bg"></div>
     <h1>🍛 India Food Map</h1>
     <p>Tourist's Ultimate Food Guide — Har State Ka Asli Swad</p>
     <div class="stats">
-        <div class="stat"><div class="stat-num">28</div><div class="stat-label">States</div></div>
+        <div class="stat"><div class="stat-num" id="stateCount">28</div><div class="stat-label">States</div></div>
         <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Dishes</div></div>
         <div class="stat"><div class="stat-num">56+</div><div class="stat-label">Restaurants</div></div>
+        <div class="stat"><button class="btn btn-wa" onclick="shareWhatsApp()">📤 Share</button></div>
+        <div class="stat"><button class="btn btn-print" onclick="window.print()">🖨️ Print</button></div>
     </div>
 </header>
-
 <div class="controls">
     <div class="search-row">
         <input type="text" id="search" placeholder="🔍 Search state, dish, restaurant...">
-        <button class="btn btn-primary" onclick="searchFood()">Search</button>
-        <button class="btn btn-outline" onclick="clearSearch()">Clear</button>
+        <button class="btn btn-primary" onclick="applyFilters()">Search</button>
+        <button class="btn btn-outline" onclick="clearAll()">Clear</button>
+    </div>
+    <div class="filter-row" id="regionRow">
+        <button class="btn btn-outline active" onclick="setRegion('all',this)">🇮🇳 All India</button>
+        <button class="btn btn-outline" onclick="setRegion('North',this)">☃️ North</button>
+        <button class="btn btn-outline" onclick="setRegion('South',this)">🌴 South</button>
+        <button class="btn btn-outline" onclick="setRegion('East',this)">🌅 East</button>
+        <button class="btn btn-outline" onclick="setRegion('West',this)">🌊 West</button>
+        <button class="btn btn-outline" onclick="setRegion('Central',this)">🏔️ Central</button>
+        <button class="btn btn-outline" onclick="setRegion('Northeast',this)">🌿 NE</button>
     </div>
     <div class="filter-row">
-        <button class="btn btn-outline active" onclick="filterRegion('all',this)">🇮🇳 All India</button>
-        <button class="btn btn-outline" onclick="filterRegion('North',this)">☃️ North</button>
-        <button class="btn btn-outline" onclick="filterRegion('South',this)">🌴 South</button>
-        <button class="btn btn-outline" onclick="filterRegion('East',this)">🌅 East</button>
-        <button class="btn btn-outline" onclick="filterRegion('West',this)">🌊 West</button>
-        <button class="btn btn-outline" onclick="filterRegion('Central',this)">🏔️ Central</button>
-        <button class="btn btn-outline" onclick="filterRegion('Northeast',this)">🌿 Northeast</button>
+        <button class="btn btn-outline active" id="dietAll" onclick="setDiet('all',this)">🍽️ All Food</button>
+        <button class="btn btn-green" id="dietVeg" onclick="setDiet('veg',this)">🟢 Veg Only</button>
+        <button class="btn btn-red" id="dietNonveg" onclick="setDiet('nonveg',this)">🔴 Non-Veg</button>
+    </div>
+    <div class="sort-row">
+        <select id="sortSelect" onchange="applyFilters()">
+            <option value="default">📋 Default Order</option>
+            <option value="name-az">🔤 Name A–Z</option>
+            <option value="name-za">🔤 Name Z–A</option>
+            <option value="budget-low">💰 Budget: Low to High</option>
+            <option value="budget-high">💰 Budget: High to Low</option>
+            <option value="rating">⭐ Top Rated</option>
+        </select>
     </div>
 </div>
-
-<div class="states" id="states">
-
-    <!-- RAJASTHAN -->
-    <div class="card" data-region="North">
-        <div class="card-photo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Jaisalmer_fort.jpg/640px-Jaisalmer_fort.jpg" alt="Rajasthan" onerror="this.style.display='none'">
-            <div class="region-badge">North India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header">
-                <div><h2>🏯 Rajasthan</h2><p class="capital">🏛️ Jaipur</p></div>
-            </div>
-            <div class="star-rating" data-state="rajasthan">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Dal Baati Churma</span> — Traditional royal dish</div>
-            <div class="dish"><span>Laal Maas</span> — Fiery red mutton curry</div>
-            <div class="dish"><span>Ghevar</span> — Festival sweet</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Chokhi Dhani, Jaipur</span> — Village theme dining</div>
-            <div class="restaurant"><span>LMB Hotel</span> — Since 1954, iconic</div>
-            <p class="price">💰 ₹50–200 per meal</p>
-            <div class="tip">💡 Eat langar-style thali at roadside dhabas near Pushkar!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+rajasthan+india" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-rajasthan"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-rajasthan">
-                    <textarea placeholder="Share your food experience..." id="review-rajasthan"></textarea>
-                    <button class="btn-small" onclick="addReview('rajasthan')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- KERALA -->
-    <div class="card" data-region="South">
-        <div class="card-photo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Backwaters_of_Kerala.jpg/640px-Backwaters_of_Kerala.jpg" alt="Kerala" onerror="this.style.display='none'">
-            <div class="region-badge">South India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🌴 Kerala</h2><p class="capital">🏛️ Thiruvananthapuram</p></div></div>
-            <div class="star-rating" data-state="kerala">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Appam & Stew</span> — Breakfast classic</div>
-            <div class="dish"><span>Kerala Fish Curry</span> — Coconut milk based</div>
-            <div class="dish"><span>Puttu & Kadala</span> — Morning staple</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Dhe Puttu, Kochi</span> — Best puttu varieties</div>
-            <div class="restaurant"><span>Paragon Restaurant</span> — Iconic seafood</div>
-            <p class="price">💰 ₹80–300 per meal</p>
-            <div class="tip">💡 Try banana leaf sadhya on Sundays — 26 dishes for ₹120!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+kerala+india" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-kerala"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-kerala">
-                    <textarea placeholder="Share your food experience..." id="review-kerala"></textarea>
-                    <button class="btn-small" onclick="addReview('kerala')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- GOA -->
-    <div class="card" data-region="West">
-        <div class="card-photo" style="background:linear-gradient(135deg,#0a2a1a,#0a1a2a)">
-            <div class="card-photo-placeholder">🏖️</div>
-            <div class="region-badge">West India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🏖️ Goa</h2><p class="capital">🏛️ Panaji</p></div></div>
-            <div class="star-rating" data-state="goa">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Fish Curry Rice</span> — Goan staple meal</div>
-            <div class="dish"><span>Prawn Balchao</span> — Spicy tangy pickle</div>
-            <div class="dish"><span>Bebinca</span> — Traditional layered dessert</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Fisherman's Wharf</span> — Riverside dining</div>
-            <div class="restaurant"><span>Britto's Beach Shack</span> — Iconic Calangute</div>
-            <p class="price">💰 ₹150–500 per meal</p>
-            <div class="tip">💡 Eat at local beach shacks — tastier and cheaper than hotels!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+restaurants+goa+india" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-goa"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-goa">
-                    <textarea placeholder="Share your food experience..." id="review-goa"></textarea>
-                    <button class="btn-small" onclick="addReview('goa')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PUNJAB -->
-    <div class="card" data-region="North">
-        <div class="card-photo" style="background:linear-gradient(135deg,#1a1000,#2a1a00)">
-            <div class="card-photo-placeholder">🕌</div>
-            <div class="region-badge">North India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🕌 Punjab</h2><p class="capital">🏛️ Chandigarh</p></div></div>
-            <div class="star-rating" data-state="punjab">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Butter Chicken</span> — Born in Punjab!</div>
-            <div class="dish"><span>Sarson Da Saag</span> — Winter special with makki roti</div>
-            <div class="dish"><span>Amritsari Kulcha</span> — Stuffed bread delight</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Kesar Da Dhaba, Amritsar</span> — Since 1916!</div>
-            <div class="restaurant"><span>Brothers Dhaba</span> — Local favourite</div>
-            <p class="price">💰 ₹100–400 per meal</p>
-            <div class="tip">💡 Free langar at Golden Temple — tastiest meal you'll ever have!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+amritsar+punjab+india" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-punjab"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-punjab">
-                    <textarea placeholder="Share your food experience..." id="review-punjab"></textarea>
-                    <button class="btn-small" onclick="addReview('punjab')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ANDHRA PRADESH -->
-    <div class="card" data-region="South">
-        <div class="card-photo" style="background:linear-gradient(135deg,#1a0a00,#2a1000)">
-            <div class="card-photo-placeholder">🌶️</div>
-            <div class="region-badge">South India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🌶️ Andhra Pradesh</h2><p class="capital">🏛️ Amaravati</p></div></div>
-            <div class="star-rating" data-state="andhra">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Hyderabadi Biryani</span> — World famous!</div>
-            <div class="dish"><span>Pesarattu</span> — Green moong dosa</div>
-            <div class="dish"><span>Gongura Pickle</span> — Tangy sorrel chutney</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Paradise Restaurant</span> — Best biryani since 1953</div>
-            <div class="restaurant"><span>Bawarchi Restaurant</span> — Iconic biryani</div>
-            <p class="price">💰 ₹80–350 per meal</p>
-            <div class="tip">💡 Order biryani with mirchi ka salan and raita!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=paradise+restaurant+hyderabad" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-andhra"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-andhra">
-                    <textarea placeholder="Share your food experience..." id="review-andhra"></textarea>
-                    <button class="btn-small" onclick="addReview('andhra')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- WEST BENGAL -->
-    <div class="card" data-region="East">
-        <div class="card-photo" style="background:linear-gradient(135deg,#001a1a,#001010)">
-            <div class="card-photo-placeholder">🐟</div>
-            <div class="region-badge">East India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🐟 West Bengal</h2><p class="capital">🏛️ Kolkata</p></div></div>
-            <div class="star-rating" data-state="bengal">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Hilsa Fish Curry</span> — Bengali pride dish</div>
-            <div class="dish"><span>Mishti Doi</span> — Sweet caramel yogurt</div>
-            <div class="dish"><span>Kathi Roll</span> — Kolkata street food legend</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>6 Ballygunge Place</span> — Best Bengali cuisine</div>
-            <div class="restaurant"><span>Arsalan Restaurant</span> — Best Kolkata biryani</div>
-            <p class="price">💰 ₹60–250 per meal</p>
-            <div class="tip">💡 Try rosogolla at KC Das — the original shop since 1866!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+kolkata+west+bengal" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-bengal"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-bengal">
-                    <textarea placeholder="Share your food experience..." id="review-bengal"></textarea>
-                    <button class="btn-small" onclick="addReview('bengal')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- KASHMIR -->
-    <div class="card" data-region="North">
-        <div class="card-photo" style="background:linear-gradient(135deg,#001a2a,#0a0a2a)">
-            <div class="card-photo-placeholder">🏔️</div>
-            <div class="region-badge">North India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🏔️ Kashmir</h2><p class="capital">🏛️ Srinagar</p></div></div>
-            <div class="star-rating" data-state="kashmir">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Rogan Josh</span> — Aromatic braised mutton</div>
-            <div class="dish"><span>Yakhni</span> — Delicate yogurt curry</div>
-            <div class="dish"><span>Kahwa Tea</span> — Saffron green tea</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Ahdoos Restaurant</span> — Since 1918, legendary</div>
-            <div class="restaurant"><span>Mughal Darbar</span> — Best Wazwan feast</div>
-            <p class="price">💰 ₹100–400 per meal</p>
-            <div class="tip">💡 Try full Wazwan — 36-course feast — a once-in-a-lifetime experience!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+restaurants+srinagar+kashmir" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-kashmir"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-kashmir">
-                    <textarea placeholder="Share your food experience..." id="review-kashmir"></textarea>
-                    <button class="btn-small" onclick="addReview('kashmir')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TAMIL NADU -->
-    <div class="card" data-region="South">
-        <div class="card-photo" style="background:linear-gradient(135deg,#0a1a00,#0a0a00)">
-            <div class="card-photo-placeholder">🌊</div>
-            <div class="region-badge">South India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🌊 Tamil Nadu</h2><p class="capital">🏛️ Chennai</p></div></div>
-            <div class="star-rating" data-state="tamilnadu">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Dosa & Sambar</span> — Crispy classic combo</div>
-            <div class="dish"><span>Chettinad Chicken</span> — Boldest spice mix in India</div>
-            <div class="dish"><span>Filter Coffee</span> — Frothy south Indian coffee</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Murugan Idli Shop</span> — Softest idli ever</div>
-            <div class="restaurant"><span>Saravana Bhavan</span> — World famous chain</div>
-            <p class="price">💰 ₹50–200 per meal</p>
-            <div class="tip">💡 Eat on banana leaf — the traditional way. Adds real flavour!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+restaurants+chennai+tamil+nadu" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-tamilnadu"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-tamilnadu">
-                    <textarea placeholder="Share your food experience..." id="review-tamilnadu"></textarea>
-                    <button class="btn-small" onclick="addReview('tamilnadu')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAHARASHTRA -->
-    <div class="card" data-region="West">
-        <div class="card-photo" style="background:linear-gradient(135deg,#1a0a1a,#0a0a1a)">
-            <div class="card-photo-placeholder">🏙️</div>
-            <div class="region-badge">West India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🏙️ Maharashtra</h2><p class="capital">🏛️ Mumbai</p></div></div>
-            <div class="star-rating" data-state="maharashtra">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Vada Pav</span> — Mumbai's answer to the burger</div>
-            <div class="dish"><span>Misal Pav</span> — Spicy sprouted curry</div>
-            <div class="dish"><span>Puran Poli</span> — Sweet stuffed flatbread</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Cafe Madras, Mumbai</span> — Best South Indian</div>
-            <div class="restaurant"><span>Trishna Restaurant</span> — Finest seafood</div>
-            <p class="price">💰 ₹50–300 per meal</p>
-            <div class="tip">💡 Vada Pav at Ashok Vada Pav, Dadar — the most iconic stall!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+street+food+mumbai+maharashtra" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-maharashtra"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-maharashtra">
-                    <textarea placeholder="Share your food experience..." id="review-maharashtra"></textarea>
-                    <button class="btn-small" onclick="addReview('maharashtra')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- UTTAR PRADESH -->
-    <div class="card" data-region="North">
-        <div class="card-photo" style="background:linear-gradient(135deg,#1a1000,#0a0a00)">
-            <div class="card-photo-placeholder">🕍</div>
-            <div class="region-badge">North India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🕍 Uttar Pradesh</h2><p class="capital">🏛️ Lucknow</p></div></div>
-            <div class="star-rating" data-state="up">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Lucknowi Biryani</span> — Dum style, Awadhi perfection</div>
-            <div class="dish"><span>Galouti Kebab</span> — Melts in your mouth</div>
-            <div class="dish"><span>Basket Chaat</span> — Crispy edible bowl chaat</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Tunday Kababi</span> — Since 1905, legendary!</div>
-            <div class="restaurant"><span>Rahim's, Lucknow</span> — Best nihari kulcha</div>
-            <p class="price">💰 ₹80–300 per meal</p>
-            <div class="tip">💡 Hazratganj area has the best street food concentration!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=tunday+kababi+lucknow" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-up"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-up">
-                    <textarea placeholder="Share your food experience..." id="review-up"></textarea>
-                    <button class="btn-small" onclick="addReview('up')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- GUJARAT -->
-    <div class="card" data-region="West">
-        <div class="card-photo" style="background:linear-gradient(135deg,#1a0a00,#1a1a00)">
-            <div class="card-photo-placeholder">🥘</div>
-            <div class="region-badge">West India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🥘 Gujarat</h2><p class="capital">🏛️ Gandhinagar</p></div></div>
-            <div class="star-rating" data-state="gujarat">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Dhokla</span> — Steamed fermented snack</div>
-            <div class="dish"><span>Thepla</span> — Spiced flatbread, perfect travel food</div>
-            <div class="dish"><span>Undhiyu</span> — Winter mixed vegetable dish</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Agashiye, Ahmedabad</span> — Rooftop thali experience</div>
-            <div class="restaurant"><span>Gordhan Thal</span> — Best Gujarati thali</div>
-            <p class="price">💰 ₹60–250 per meal</p>
-            <div class="tip">💡 Gujarati thali is unlimited — eat as much as you want!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+gujarati+thali+ahmedabad" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-gujarat"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-gujarat">
-                    <textarea placeholder="Share your food experience..." id="review-gujarat"></textarea>
-                    <button class="btn-small" onclick="addReview('gujarat')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MADHYA PRADESH -->
-    <div class="card" data-region="Central">
-        <div class="card-photo" style="background:linear-gradient(135deg,#0a1a00,#001a0a)">
-            <div class="card-photo-placeholder">🌿</div>
-            <div class="region-badge">Central India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🌿 Madhya Pradesh</h2><p class="capital">🏛️ Bhopal</p></div></div>
-            <div class="star-rating" data-state="mp">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Poha Jalebi</span> — Classic MP breakfast combo</div>
-            <div class="dish"><span>Bhutte Ka Kees</span> — Grated corn snack</div>
-            <div class="dish"><span>Dal Bafla</span> — MP version of Dal Baati</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Chappan Dukan, Indore</span> — 56 food stalls!</div>
-            <div class="restaurant"><span>Sarafa Bazaar</span> — Night food market</div>
-            <p class="price">💰 ₹40–180 per meal</p>
-            <div class="tip">💡 Indore is ranked India's cleanest city AND best street food city!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=chappan+dukan+indore+madhya+pradesh" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-mp"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-mp">
-                    <textarea placeholder="Share your food experience..." id="review-mp"></textarea>
-                    <button class="btn-small" onclick="addReview('mp')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ODISHA -->
-    <div class="card" data-region="East">
-        <div class="card-photo" style="background:linear-gradient(135deg,#001a1a,#0a1a00)">
-            <div class="card-photo-placeholder">🏛️</div>
-            <div class="region-badge">East India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🏛️ Odisha</h2><p class="capital">🏛️ Bhubaneswar</p></div></div>
-            <div class="star-rating" data-state="odisha">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Dalma</span> — Lentils with vegetables</div>
-            <div class="dish"><span>Pakhala Bhata</span> — Fermented rice dish</div>
-            <div class="dish"><span>Chhena Poda</span> — Caramelised cottage cheese dessert</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Hare Krishna Restaurant</span> — Prasad style food</div>
-            <div class="restaurant"><span>Dalma Restaurant</span> — Best Odia cuisine</div>
-            <p class="price">💰 ₹50–180 per meal</p>
-            <div class="tip">💡 Try prasad at Jagannath Temple in Puri — divine taste!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+bhubaneswar+odisha" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-odisha"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-odisha">
-                    <textarea placeholder="Share your food experience..." id="review-odisha"></textarea>
-                    <button class="btn-small" onclick="addReview('odisha')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ASSAM -->
-    <div class="card" data-region="Northeast">
-        <div class="card-photo" style="background:linear-gradient(135deg,#001a00,#001a0a)">
-            <div class="card-photo-placeholder">🍵</div>
-            <div class="region-badge">Northeast India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🍵 Assam</h2><p class="capital">🏛️ Dispur</p></div></div>
-            <div class="star-rating" data-state="assam">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Assam Tea</span> — World's finest black tea</div>
-            <div class="dish"><span>Masor Tenga</span> — Sour fish curry</div>
-            <div class="dish"><span>Pitha</span> — Rice cake festival sweet</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Paradise Restaurant, Guwahati</span> — Best Assamese</div>
-            <div class="restaurant"><span>Ilish Truly Bong</span> — Best fish dishes</div>
-            <p class="price">💰 ₹60–200 per meal</p>
-            <div class="tip">💡 Visit a tea estate — drink tea plucked same morning!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+guwahati+assam" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-assam"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-assam">
-                    <textarea placeholder="Share your food experience..." id="review-assam"></textarea>
-                    <button class="btn-small" onclick="addReview('assam')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- HIMACHAL PRADESH -->
-    <div class="card" data-region="North">
-        <div class="card-photo" style="background:linear-gradient(135deg,#001020,#001530)">
-            <div class="card-photo-placeholder">⛰️</div>
-            <div class="region-badge">North India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>⛰️ Himachal Pradesh</h2><p class="capital">🏛️ Shimla</p></div></div>
-            <div class="star-rating" data-state="himachal">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Siddu</span> — Stuffed wheat bread</div>
-            <div class="dish"><span>Dham</span> — Traditional feast dish</div>
-            <div class="dish"><span>Babru</span> — Black gram stuffed kachori</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>Cafe Simla Times</span> — Colonial era cafe</div>
-            <div class="restaurant"><span>Ashiana & Goofa, Shimla</span> — Best views + food</div>
-            <p class="price">💰 ₹80–300 per meal</p>
-            <div class="tip">💡 Eat at roadside dhabas between Manali and Rohtang — best momos!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=best+food+shimla+manali+himachal" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-himachal"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-himachal">
-                    <textarea placeholder="Share your food experience..." id="review-himachal"></textarea>
-                    <button class="btn-small" onclick="addReview('himachal')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- KARNATAKA -->
-    <div class="card" data-region="South">
-        <div class="card-photo" style="background:linear-gradient(135deg,#0a0a1a,#1a0a00)">
-            <div class="card-photo-placeholder">🥗</div>
-            <div class="region-badge">South India</div>
-        </div>
-        <div class="card-body">
-            <div class="card-header"><div><h2>🥗 Karnataka</h2><p class="capital">🏛️ Bengaluru</p></div></div>
-            <div class="star-rating" data-state="karnataka">
-                <span class="star filled" onclick="rateStar(this,1)">★</span>
-                <span class="star filled" onclick="rateStar(this,2)">★</span>
-                <span class="star filled" onclick="rateStar(this,3)">★</span>
-                <span class="star filled" onclick="rateStar(this,4)">★</span>
-                <span class="star filled" onclick="rateStar(this,5)">★</span>
-            </div>
-            <div class="section-label">🍽 Must Try Dishes</div>
-            <div class="dish"><span>Bisi Bele Bath</span> — Hot lentil rice dish</div>
-            <div class="dish"><span>Mysore Pak</span> — Rich ghee sweet</div>
-            <div class="dish"><span>Ragi Mudde</span> — Finger millet ball</div>
-            <div class="section-label">🏪 Best Restaurants</div>
-            <div class="restaurant"><span>MTR, Bengaluru</span> — Since 1924, legendary!</div>
-            <div class="restaurant"><span>CTR Shivajinagar</span> — Best benne masala dosa</div>
-            <p class="price">💰 ₹60–250 per meal</p>
-            <div class="tip">💡 Queue at CTR at 8am for the world's best butter masala dosa!</div>
-            <a class="maps-btn" href="https://maps.google.com/?q=MTR+restaurant+bengaluru+karnataka" target="_blank">📍 View on Maps</a>
-            <div class="reviews-section">
-                <div class="section-label">💬 Traveller Reviews</div>
-                <div id="reviews-karnataka"></div>
-                <div class="review-form">
-                    <input type="text" placeholder="Your name" id="name-karnataka">
-                    <textarea placeholder="Share your food experience..." id="review-karnataka"></textarea>
-                    <button class="btn-small" onclick="addReview('karnataka')">Post Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
+<div class="states" id="states"></div>
 <div id="noResults">😔 No results found. Try a different search!</div>
-
-<footer>
-    <p>🍛 India Food Map &nbsp;|&nbsp; Made with ❤️ for travellers &nbsp;|&nbsp; © 2026</p>
-    <p style="margin-top:8px; font-size:12px;">Discover India one dish at a time 🇮🇳</p>
-</footer>
-
+<footer><p>🍛 India Food Map &nbsp;|&nbsp; Made with ❤️ for travellers &nbsp;|&nbsp; © 2026</p><p style="margin-top:8px;font-size:12px">Discover India one dish at a time 🇮🇳</p></footer>
 <script>
-    // Theme
-    function toggleTheme() {
-        var html = document.documentElement;
-        var btn = document.querySelector('.theme-btn');
-        if (html.getAttribute('data-theme') === 'dark') {
-            html.setAttribute('data-theme', 'light');
-            btn.textContent = '☀️';
-        } else {
-            html.setAttribute('data-theme', 'dark');
-            btn.textContent = '🌙';
-        }
-    }
+var states=[
+{id:'rajasthan',name:'Rajasthan',emoji:'🏯',capital:'Jaipur',region:'North',diet:'both',budgetMin:50,budgetMax:200,rating:5,photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Jaisalmer_fort.jpg/400px-Jaisalmer_fort.jpg',gallery:['https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Jaisalmer_fort.jpg/200px-Jaisalmer_fort.jpg'],dishes:[{name:'Dal Baati Churma',desc:'Traditional royal dish',type:'veg'},{name:'Laal Maas',desc:'Fiery red mutton curry',type:'nonveg'},{name:'Ghevar',desc:'Festival sweet',type:'veg'}],restaurants:['Chokhi Dhani — Village theme dining','LMB Hotel — Since 1954'],tip:'Eat langar-style thali at roadside dhabas near Pushkar!',mapsQuery:'best+food+jaipur+rajasthan'},
+{id:'kerala',name:'Kerala',emoji:'🌴',capital:'Thiruvananthapuram',region:'South',diet:'both',budgetMin:80,budgetMax:300,rating:5,photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Backwaters_of_Kerala.jpg/400px-Backwaters_of_Kerala.jpg',gallery:[],dishes:[{name:'Appam & Stew',desc:'Breakfast classic',type:'veg'},{name:'Kerala Fish Curry',desc:'Coconut milk based',type:'nonveg'},{name:'Puttu & Kadala',desc:'Morning staple',type:'veg'}],restaurants:['Dhe Puttu, Kochi — Best puttu','Paragon Restaurant — Iconic seafood'],tip:'Try banana leaf sadhya on Sundays — 26 dishes for Rs 120!',mapsQuery:'best+food+kerala+india'},
+{id:'goa',name:'Goa',emoji:'🏖️',capital:'Panaji',region:'West',diet:'nonveg',budgetMin:150,budgetMax:500,rating:5,photo:'',gallery:[],dishes:[{name:'Fish Curry Rice',desc:'Goan staple',type:'nonveg'},{name:'Prawn Balchao',desc:'Spicy tangy pickle',type:'nonveg'},{name:'Bebinca',desc:'Traditional layered dessert',type:'veg'}],restaurants:["Fisherman's Wharf — Riverside dining","Britto's Beach Shack — Iconic"],tip:'Eat at local beach shacks — tastier and cheaper!',mapsQuery:'best+food+restaurants+goa+india'},
+{id:'punjab',name:'Punjab',emoji:'🕌',capital:'Chandigarh',region:'North',diet:'both',budgetMin:100,budgetMax:400,rating:5,photo:'',gallery:[],dishes:[{name:'Butter Chicken',desc:'Born in Punjab!',type:'nonveg'},{name:'Sarson Da Saag',desc:'Winter special',type:'veg'},{name:'Amritsari Kulcha',desc:'Stuffed bread',type:'veg'}],restaurants:['Kesar Da Dhaba — Since 1916!','Brothers Dhaba — Local favourite'],tip:'Free langar at Golden Temple — tastiest meal ever!',mapsQuery:'best+food+amritsar+punjab'},
+{id:'andhra',name:'Andhra Pradesh',emoji:'🌶️',capital:'Amaravati',region:'South',diet:'both',budgetMin:80,budgetMax:350,rating:4,photo:'',gallery:[],dishes:[{name:'Hyderabadi Biryani',desc:'World famous!',type:'nonveg'},{name:'Pesarattu',desc:'Green moong dosa',type:'veg'},{name:'Gongura Pickle',desc:'Tangy sorrel chutney',type:'veg'}],restaurants:['Paradise Restaurant — Best biryani since 1953','Bawarchi Restaurant — Iconic'],tip:'Order biryani with mirchi ka salan!',mapsQuery:'paradise+restaurant+hyderabad'},
+{id:'bengal',name:'West Bengal',emoji:'🐟',capital:'Kolkata',region:'East',diet:'both',budgetMin:60,budgetMax:250,rating:5,photo:'',gallery:[],dishes:[{name:'Hilsa Fish Curry',desc:'Bengali pride',type:'nonveg'},{name:'Mishti Doi',desc:'Sweet caramel yogurt',type:'veg'},{name:'Kathi Roll',desc:'Street food legend',type:'both'}],restaurants:['6 Ballygunge Place — Best Bengali','Arsalan Restaurant — Best biryani'],tip:'Try rosogolla at KC Das — original shop since 1866!',mapsQuery:'best+food+kolkata+west+bengal'},
+{id:'kashmir',name:'Kashmir',emoji:'🏔️',capital:'Srinagar',region:'North',diet:'both',budgetMin:100,budgetMax:400,rating:5,photo:'',gallery:[],dishes:[{name:'Rogan Josh',desc:'Aromatic braised mutton',type:'nonveg'},{name:'Yakhni',desc:'Delicate yogurt curry',type:'nonveg'},{name:'Kahwa Tea',desc:'Saffron green tea',type:'veg'}],restaurants:['Ahdoos Restaurant — Since 1918','Mughal Darbar — Best Wazwan'],tip:'Try full Wazwan — 36-course feast!',mapsQuery:'best+food+srinagar+kashmir'},
+{id:'tamilnadu',name:'Tamil Nadu',emoji:'🌊',capital:'Chennai',region:'South',diet:'both',budgetMin:50,budgetMax:200,rating:5,photo:'',gallery:[],dishes:[{name:'Dosa & Sambar',desc:'Crispy classic',type:'veg'},{name:'Chettinad Chicken',desc:'Boldest spice mix',type:'nonveg'},{name:'Filter Coffee',desc:'Frothy south Indian',type:'veg'}],restaurants:['Murugan Idli Shop — Softest idli','Saravana Bhavan — World famous'],tip:'Eat on banana leaf — traditional experience!',mapsQuery:'best+food+chennai+tamil+nadu'},
+{id:'maharashtra',name:'Maharashtra',emoji:'🏙️',capital:'Mumbai',region:'West',diet:'both',budgetMin:50,budgetMax:300,rating:5,photo:'',gallery:[],dishes:[{name:'Vada Pav',desc:"Mumbai's burger",type:'veg'},{name:'Misal Pav',desc:'Spicy sprouted curry',type:'veg'},{name:'Puran Poli',desc:'Sweet stuffed flatbread',type:'veg'}],restaurants:['Cafe Madras, Mumbai — Best South Indian','Trishna — Finest seafood'],tip:'Vada Pav at Ashok Vada Pav, Dadar — most iconic!',mapsQuery:'best+street+food+mumbai'},
+{id:'up',name:'Uttar Pradesh',emoji:'🕍',capital:'Lucknow',region:'North',diet:'both',budgetMin:80,budgetMax:300,rating:5,photo:'',gallery:[],dishes:[{name:'Lucknowi Biryani',desc:'Dum style Awadhi',type:'nonveg'},{name:'Galouti Kebab',desc:'Melts in your mouth',type:'nonveg'},{name:'Basket Chaat',desc:'Crispy edible bowl',type:'veg'}],restaurants:['Tunday Kababi — Since 1905!','Rahim\'s — Best nihari kulcha'],tip:'Hazratganj has best street food concentration!',mapsQuery:'tunday+kababi+lucknow'},
+{id:'gujarat',name:'Gujarat',emoji:'🥘',capital:'Gandhinagar',region:'West',diet:'veg',budgetMin:60,budgetMax:250,rating:5,photo:'',gallery:[],dishes:[{name:'Dhokla',desc:'Steamed fermented snack',type:'veg'},{name:'Thepla',desc:'Spiced flatbread',type:'veg'},{name:'Undhiyu',desc:'Winter mixed vegetables',type:'veg'}],restaurants:['Agashiye, Ahmedabad — Rooftop thali','Gordhan Thal — Best Gujarati thali'],tip:'Gujarati thali is unlimited — eat as much as you want!',mapsQuery:'best+gujarati+thali+ahmedabad'},
+{id:'mp',name:'Madhya Pradesh',emoji:'🌿',capital:'Bhopal',region:'Central',diet:'both',budgetMin:40,budgetMax:180,rating:4,photo:'',gallery:[],dishes:[{name:'Poha Jalebi',desc:'Classic MP breakfast',type:'veg'},{name:'Bhutte Ka Kees',desc:'Grated corn snack',type:'veg'},{name:'Dal Bafla',desc:'MP version of Dal Baati',type:'veg'}],restaurants:['Chappan Dukan, Indore — 56 food stalls!','Sarafa Bazaar — Night market'],tip:'Indore is ranked best street food city in India!',mapsQuery:'chappan+dukan+indore'},
+{id:'odisha',name:'Odisha',emoji:'🏛️',capital:'Bhubaneswar',region:'East',diet:'both',budgetMin:50,budgetMax:180,rating:4,photo:'',gallery:[],dishes:[{name:'Dalma',desc:'Lentils with vegetables',type:'veg'},{name:'Pakhala Bhata',desc:'Fermented rice dish',type:'veg'},{name:'Chhena Poda',desc:'Caramelised cheese dessert',type:'veg'}],restaurants:['Hare Krishna Restaurant — Prasad style','Dalma Restaurant — Best Odia'],tip:'Try prasad at Jagannath Temple in Puri!',mapsQuery:'best+food+bhubaneswar+odisha'},
+{id:'assam',name:'Assam',emoji:'🍵',capital:'Dispur',region:'Northeast',diet:'both',budgetMin:60,budgetMax:200,rating:5,photo:'',gallery:[],dishes:[{name:'Assam Tea',desc:"World's finest black tea",type:'veg'},{name:'Masor Tenga',desc:'Sour fish curry',type:'nonveg'},{name:'Pitha',desc:'Rice cake festival sweet',type:'veg'}],restaurants:['Paradise Restaurant, Guwahati','Ilish Truly Bong — Best fish'],tip:'Visit a tea estate — drink freshly plucked tea!',mapsQuery:'best+food+guwahati+assam'},
+{id:'himachal',name:'Himachal Pradesh',emoji:'⛰️',capital:'Shimla',region:'North',diet:'both',budgetMin:80,budgetMax:300,rating:5,photo:'',gallery:[],dishes:[{name:'Siddu',desc:'Stuffed wheat bread',type:'veg'},{name:'Dham',desc:'Traditional feast dish',type:'veg'},{name:'Trout Fish Curry',desc:'Himalayan river trout',type:'nonveg'}],restaurants:['Cafe Simla Times — Colonial era','Ashiana & Goofa — Best views'],tip:'Roadside dhabas between Manali-Rohtang — best momos!',mapsQuery:'best+food+shimla+manali+himachal'},
+{id:'karnataka',name:'Karnataka',emoji:'🥗',capital:'Bengaluru',region:'South',diet:'both',budgetMin:60,budgetMax:250,rating:5,photo:'',gallery:[],dishes:[{name:'Bisi Bele Bath',desc:'Hot lentil rice dish',type:'veg'},{name:'Mysore Pak',desc:'Rich ghee sweet',type:'veg'},{name:'Ragi Mudde',desc:'Finger millet ball',type:'veg'}],restaurants:['MTR, Bengaluru — Since 1924!','CTR Shivajinagar — Best masala dosa'],tip:"Queue at CTR at 8am for world's best butter dosa!",mapsQuery:'MTR+restaurant+bengaluru'},
+{id:'bihar',name:'Bihar',emoji:'🌾',capital:'Patna',region:'East',diet:'both',budgetMin:30,budgetMax:150,rating:4,photo:'',gallery:[],dishes:[{name:'Litti Chokha',desc:'Roasted wheat ball with smoky brinjal',type:'veg'},{name:'Sattu Paratha',desc:'Roasted gram flatbread',type:'veg'},{name:'Khaja',desc:'Flaky sweet from Silao',type:'veg'}],restaurants:['Sone Ki Nagri, Patna — Best litti chokha','Tikka Shikka — Local favourite'],tip:'Litti Chokha is best at roadside stalls with mustard oil!',mapsQuery:'litti+chokha+patna+bihar'},
+{id:'uttarakhand',name:'Uttarakhand',emoji:'🗻',capital:'Dehradun',region:'North',diet:'both',budgetMin:60,budgetMax:250,rating:5,photo:'',gallery:[],dishes:[{name:'Aloo Ke Gutke',desc:'Spiced mountain potatoes',type:'veg'},{name:'Bal Mithai',desc:'Famous chocolate-like sweet',type:'veg'},{name:'Kafuli',desc:'Green leafy curry',type:'veg'}],restaurants:['Chotiwala Restaurant, Rishikesh — Iconic','Glasshouse on the Ganges'],tip:'Rishikesh has amazing vegetarian food — holy city!',mapsQuery:'best+food+rishikesh+uttarakhand'},
+{id:'haryana',name:'Haryana',emoji:'🌽',capital:'Chandigarh',region:'North',diet:'both',budgetMin:50,budgetMax:200,rating:4,photo:'',gallery:[],dishes:[{name:'Bajra Khichdi',desc:'Pearl millet porridge',type:'veg'},{name:'Hara Dhania Cholia',desc:'Coriander with chickpeas',type:'veg'},{name:'Kachri Ki Sabzi',desc:'Wild melon curry',type:'veg'}],restaurants:['Haveli Restaurant, NH1 — Iconic dhaba','Suruchi Restaurant, Gurugram'],tip:'Highway dhabas on NH1 Delhi-Amritsar serve best food!',mapsQuery:'best+haryanvi+food+gurugram'},
+{id:'telangana',name:'Telangana',emoji:'🌃',capital:'Hyderabad',region:'South',diet:'both',budgetMin:80,budgetMax:350,rating:5,photo:'',gallery:[],dishes:[{name:'Haleem',desc:'Slow-cooked meat and lentils',type:'nonveg'},{name:'Sarva Pindi',desc:'Rice flour savoury pancake',type:'veg'},{name:'Qubani Ka Meetha',desc:'Apricot dessert',type:'veg'}],restaurants:['Hotel Shadab — Best haleem in Hyderabad','Shah Ghouse Cafe — Famous biryani'],tip:'Ramzan time has the best Haleem — Pather Gatti area!',mapsQuery:'best+haleem+biryani+hyderabad'},
+{id:'jharkhand',name:'Jharkhand',emoji:'🌲',capital:'Ranchi',region:'East',diet:'both',budgetMin:40,budgetMax:160,rating:3,photo:'',gallery:[],dishes:[{name:'Rugda',desc:'Tribal mushroom curry',type:'veg'},{name:'Chilka Roti',desc:'Rice husk flatbread',type:'veg'},{name:'Dhuska',desc:'Deep fried rice flour snack',type:'veg'}],restaurants:['Hotel Kaveri, Ranchi — Best local','Madhuban Restaurant — Popular'],tip:'Try tribal food at local markets — unique flavours!',mapsQuery:'best+tribal+food+ranchi+jharkhand'},
+{id:'chhattisgarh',name:'Chhattisgarh',emoji:'🎋',capital:'Raipur',region:'Central',diet:'both',budgetMin:30,budgetMax:150,rating:3,photo:'',gallery:[],dishes:[{name:'Chila',desc:'Rice flour crepe',type:'veg'},{name:'Bafauri',desc:'Steamed lentil dumpling',type:'veg'},{name:'Muthia',desc:'Fenugreek steamed dumplings',type:'veg'}],restaurants:['Gujrati Bhoj, Raipur — Best thali','Dawat Restaurant — Popular'],tip:'Tribal belt has unique dishes using jungle produce!',mapsQuery:'best+chhattisgarhi+food+raipur'},
+{id:'manipur',name:'Manipur',emoji:'🌺',capital:'Imphal',region:'Northeast',diet:'both',budgetMin:50,budgetMax:180,rating:4,photo:'',gallery:[],dishes:[{name:'Eromba',desc:'Fermented fish and vegetable mash',type:'nonveg'},{name:'Singju',desc:'Spicy raw salad',type:'veg'},{name:'Chamthong',desc:'Clear vegetable stew',type:'veg'}],restaurants:['Classic Hotel, Imphal — Best Manipuri','Iboyaima Restaurant — Local favourite'],tip:'Ima Keithel market (all-women market) has best snacks!',mapsQuery:'best+manipuri+food+imphal'},
+{id:'meghalaya',name:'Meghalaya',emoji:'☁️',capital:'Shillong',region:'Northeast',diet:'both',budgetMin:60,budgetMax:220,rating:4,photo:'',gallery:[],dishes:[{name:'Jadoh',desc:'Red rice with pork',type:'nonveg'},{name:'Ki Kpu',desc:'Pork with black sesame',type:'nonveg'},{name:'Doh Neiiong',desc:'Pork with black sesame curry',type:'nonveg'}],restaurants:['Trattoria, Shillong — Best continental','Dylans Cafe — Hipster favourite'],tip:'Shillong has great cafe culture — try local red rice!',mapsQuery:'best+food+shillong+meghalaya'},
+{id:'nagaland',name:'Nagaland',emoji:'🌶️',capital:'Kohima',region:'Northeast',diet:'nonveg',budgetMin:60,budgetMax:200,rating:4,photo:'',gallery:[],dishes:[{name:'Smoked Pork with Axone',desc:'Fermented soybean with pork',type:'nonveg'},{name:'Galho',desc:'Rice and meat porridge',type:'nonveg'},{name:'Zutho',desc:'Traditional rice beer',type:'veg'}],restaurants:['Naga Kitchen, Kohima — Best traditional','Blue Rose Hotel — Popular'],tip:'Hornbill Festival in December has best Naga food!',mapsQuery:'best+naga+food+kohima+nagaland'},
+{id:'sikkim',name:'Sikkim',emoji:'❄️',capital:'Gangtok',region:'Northeast',diet:'both',budgetMin:60,budgetMax:250,rating:5,photo:'',gallery:[],dishes:[{name:'Momos',desc:'Steamed dumplings — best in India!',type:'both'},{name:'Thukpa',desc:'Noodle soup',type:'both'},{name:'Sel Roti',desc:'Ring-shaped rice bread',type:'veg'}],restaurants:['Taste of Tibet, Gangtok — Best momos','Snow Lion Restaurant — Great Himalayan'],tip:"Sikkim momos are the best in India — don't miss!",mapsQuery:'best+momos+food+gangtok+sikkim'},
+{id:'tripura',name:'Tripura',emoji:'🌿',capital:'Agartala',region:'Northeast',diet:'both',budgetMin:40,budgetMax:160,rating:3,photo:'',gallery:[],dishes:[{name:'Mui Borok',desc:'Traditional Tripuri fish curry',type:'nonveg'},{name:'Berma',desc:'Fermented dry fish chutney',type:'nonveg'},{name:'Chakhwi',desc:'Bamboo shoot and pork',type:'nonveg'}],restaurants:['Hotel Welcome Palace — Best local','Tripti Restaurant — Popular'],tip:'Bamboo shoots and fermented fish define Tripuri cooking!',mapsQuery:'best+tripuri+food+agartala+tripura'},
+{id:'mizoram',name:'Mizoram',emoji:'🎍',capital:'Aizawl',region:'Northeast',diet:'nonveg',budgetMin:50,budgetMax:180,rating:3,photo:'',gallery:[],dishes:[{name:'Bai',desc:'Pork with greens and bamboo shoots',type:'nonveg'},{name:'Vawksa Rep',desc:'Smoked pork',type:'nonveg'},{name:'Misa Mach Poora',desc:'Grilled prawn with chilli',type:'nonveg'}],restaurants:['Zarkawt Market — Best local stalls','Cafe Zawlpui — Popular cafe'],tip:'Bamboo shoots used in most dishes — unique earthy flavour!',mapsQuery:'best+mizo+food+aizawl+mizoram'}
+];
 
-    // Search
-    function searchFood() {
-        var input = document.getElementById('search').value.toLowerCase();
-        var cards = document.getElementsByClassName('card');
-        var found = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (cards[i].innerText.toLowerCase().includes(input)) {
-                cards[i].style.display = '';
-                found++;
-            } else {
-                cards[i].style.display = 'none';
-            }
-        }
-        document.getElementById('noResults').style.display = found === 0 ? 'block' : 'none';
-    }
+var currentRegion='all',currentDiet='all',userRatings={},reviews={},revStars={};
 
-    function clearSearch() {
-        document.getElementById('search').value = '';
-        searchFood();
-    }
+function renderCards(list){
+  var c=document.getElementById('states');c.innerHTML='';
+  document.getElementById('noResults').style.display=list.length===0?'block':'none';
+  document.getElementById('stateCount').textContent=list.length;
+  list.forEach(function(s,idx){
+    var card=document.createElement('div');card.className='card';card.style.animationDelay=(idx*.04)+'s';
+    var dietLabel=s.diet==='veg'?'🟢 Veg':s.diet==='nonveg'?'🔴 Non-Veg':'🟡 Veg & Non-Veg';
+    var photoHTML=s.photo?'<img src="'+s.photo+'" alt="'+s.name+'" onerror="this.style.display=\'none\'">':'<span class="card-photo-emoji">'+s.emoji+'</span>';
+    var gallHTML=s.gallery&&s.gallery.length?'<div class="gallery">'+s.gallery.map(function(g){return'<img src="'+g+'" onclick="openLightbox(\''+g+'\')" onerror="this.style.display=\'none\'">';}).join('')+'</div>':'';
+    var dishHTML=s.dishes.map(function(d){var cls=d.type==='veg'?'veg-dish':d.type==='nonveg'?'nonveg-dish':'';var ic=d.type==='veg'?'🟢':d.type==='nonveg'?'🔴':'🟡';return'<div class="dish '+cls+'">'+ic+' <span>'+d.name+'</span> — '+d.desc+'</div>';}).join('');
+    var restHTML=s.restaurants.map(function(r){return'<div class="restaurant"><span>🍽️ '+r+'</span></div>';}).join('');
+    var rating=userRatings[s.id]||s.rating;
+    var starsHTML='';for(var i=1;i<=5;i++)starsHTML+='<span class="star '+(i<=rating?'filled':'')+'" onclick="rateStar(\''+s.id+'\','+i+')">★</span>';
+    starsHTML+='<span class="rating-count" id="rcount-'+s.id+'">'+rating+'/5</span>';
+    var revHTML=(reviews[s.id]||[]).map(function(r){return'<div class="review-item"><div class="review-name">👤 '+r.name+' <span class="review-stars">'+'★'.repeat(r.stars)+'</span></div><div class="review-text">'+r.text+'</div></div>';}).join('');
+    var waMsg=encodeURIComponent('Check out '+s.name+' food guide! 🍛 https://kuldeep117.github.io/india-food-map');
+    var revStarHTML=[1,2,3,4,5].map(function(n){return'<span style="cursor:pointer;font-size:16px;color:#ffd700;opacity:.3" onclick="setRevStar(\''+s.id+'\','+n+')" id="revstar-'+s.id+'-'+n+'">★</span>';}).join('');
+    card.innerHTML='<div class="card-photo">'+photoHTML+'<div class="region-badge">'+s.region+' India</div><div class="veg-badge '+s.diet+'">'+dietLabel+'</div></div>'
+      +'<div class="card-body"><h2>'+s.emoji+' '+s.name+'</h2><p class="capital">🏛️ '+s.capital+'</p>'
+      +'<div class="star-rating" id="stars-'+s.id+'">'+starsHTML+'</div>'
+      +'<div class="section-label">🍽 Must Try Dishes</div>'+dishHTML+gallHTML
+      +'<div class="section-label">🏪 Best Restaurants</div>'+restHTML
+      +'<p class="price">💰 ₹'+s.budgetMin+'–'+s.budgetMax+' per meal</p>'
+      +'<div class="tip">💡 '+s.tip+'</div>'
+      +'<div class="card-actions"><a class="maps-btn" href="https://maps.google.com/?q='+s.mapsQuery+'" target="_blank">📍 Maps</a>'
+      +'<button class="btn-wa-small" onclick="window.open(\'https://wa.me/?text='+waMsg+'\',\'_blank\')">📤 WhatsApp</button></div>'
+      +'<div class="reviews-section"><div class="section-label">💬 Reviews</div><div id="reviews-'+s.id+'">'+revHTML+'</div>'
+      +'<div class="review-form"><input type="text" placeholder="Your name" id="name-'+s.id+'">'
+      +'<textarea placeholder="Share your food experience..." id="rev-'+s.id+'"></textarea>'
+      +'<div style="display:flex;gap:5px;align-items:center;margin-bottom:5px"><span style="font-size:12px;color:var(--subtext)">Rate:</span>'+revStarHTML+'</div>'
+      +'<button class="btn-small" onclick="addReview(\''+s.id+'\')">Post Review</button></div></div></div>';
+    c.appendChild(card);
+  });
+}
 
-    document.getElementById('search').addEventListener('keyup', function(e) {
-        searchFood();
-    });
+function applyFilters(){
+  var search=document.getElementById('search').value.toLowerCase();
+  var sort=document.getElementById('sortSelect').value;
+  var filtered=states.filter(function(s){
+    var rOk=currentRegion==='all'||s.region===currentRegion;
+    var dOk=currentDiet==='all'||s.diet===currentDiet||s.diet==='both';
+    var sOk=!search||s.name.toLowerCase().includes(search)||s.capital.toLowerCase().includes(search)||s.dishes.some(function(d){return d.name.toLowerCase().includes(search);})||s.restaurants.some(function(r){return r.toLowerCase().includes(search);});
+    return rOk&&dOk&&sOk;
+  });
+  if(sort==='name-az')filtered.sort(function(a,b){return a.name.localeCompare(b.name);});
+  else if(sort==='name-za')filtered.sort(function(a,b){return b.name.localeCompare(a.name);});
+  else if(sort==='budget-low')filtered.sort(function(a,b){return a.budgetMin-b.budgetMin;});
+  else if(sort==='budget-high')filtered.sort(function(a,b){return b.budgetMax-a.budgetMax;});
+  else if(sort==='rating')filtered.sort(function(a,b){return(userRatings[b.id]||b.rating)-(userRatings[a.id]||a.rating);});
+  renderCards(filtered);
+}
 
-    // Filter
-    function filterRegion(region, btn) {
-        var cards = document.getElementsByClassName('card');
-        var buttons = document.querySelectorAll('.filter-row button');
-        buttons.forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        document.getElementById('search').value = '';
-        var found = 0;
-        for (var i = 0; i < cards.length; i++) {
-            if (region === 'all' || cards[i].getAttribute('data-region') === region) {
-                cards[i].style.display = '';
-                found++;
-            } else {
-                cards[i].style.display = 'none';
-            }
-        }
-        document.getElementById('noResults').style.display = found === 0 ? 'block' : 'none';
-    }
+function setRegion(r,btn){currentRegion=r;document.querySelectorAll('#regionRow .btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');applyFilters();}
+function setDiet(d,btn){currentDiet=d;document.querySelectorAll('#dietAll,#dietVeg,#dietNonveg').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');applyFilters();}
+function clearAll(){document.getElementById('search').value='';currentRegion='all';currentDiet='all';document.getElementById('sortSelect').value='default';document.querySelectorAll('#regionRow .btn')[0].classList.add('active');document.getElementById('dietAll').classList.add('active');document.querySelectorAll('#regionRow .btn').forEach(function(b,i){if(i>0)b.classList.remove('active');});applyFilters();}
+document.getElementById('search').addEventListener('keyup',applyFilters);
 
-    // Star rating
-    function rateStar(clickedStar, num) {
-        var container = clickedStar.parentElement;
-        var stars = container.getElementsByClassName('star');
-        for (var i = 0; i < stars.length; i++) {
-            if (i < num) {
-                stars[i].classList.add('filled');
-            } else {
-                stars[i].classList.remove('filled');
-            }
-        }
-    }
-
-    // Reviews
-    var reviews = {};
-    function addReview(state) {
-        var name = document.getElementById('name-' + state).value.trim();
-        var text = document.getElementById('review-' + state).value.trim();
-        if (!name || !text) { alert('Please enter your name and review!'); return; }
-        if (!reviews[state]) reviews[state] = [];
-        reviews[state].push({ name: name, text: text });
-        renderReviews(state);
-        document.getElementById('name-' + state).value = '';
-        document.getElementById('review-' + state).value = '';
-    }
-
-    function renderReviews(state) {
-        var container = document.getElementById('reviews-' + state);
-        if (!container) return;
-        container.innerHTML = '';
-        if (reviews[state]) {
-            reviews[state].forEach(function(r) {
-                var div = document.createElement('div');
-                div.className = 'review-item';
-                div.innerHTML = '<div class="review-name">👤 ' + r.name + '</div><div class="review-text">' + r.text + '</div>';
-                container.appendChild(div);
-            });
-        }
-    }
-
-    // Back to top
-    window.addEventListener('scroll', function() {
-        document.getElementById('backTop').style.display = window.scrollY > 400 ? 'flex' : 'none';
-    });
-    document.getElementById('backTop').style.cssText += 'align-items:center;justify-content:center;';
+function rateStar(sid,num){userRatings[sid]=num;var c=document.getElementById('stars-'+sid);if(!c)return;c.querySelectorAll('.star').forEach(function(s,i){s.classList.toggle('filled',i<num);});var rc=document.getElementById('rcount-'+sid);if(rc)rc.textContent=num+'/5';}
+function setRevStar(sid,num){revStars[sid]=num;for(var i=1;i<=5;i++){var el=document.getElementById('revstar-'+sid+'-'+i);if(el)el.style.opacity=i<=num?'1':'.3';}}
+function addReview(sid){var name=document.getElementById('name-'+sid).value.trim();var text=document.getElementById('rev-'+sid).value.trim();var stars=revStars[sid]||5;if(!name||!text){alert('Please enter your name and review!');return;}if(!reviews[sid])reviews[sid]=[];reviews[sid].push({name:name,text:text,stars:stars});var c=document.getElementById('reviews-'+sid);if(c){var div=document.createElement('div');div.className='review-item';div.innerHTML='<div class="review-name">👤 '+name+' <span class="review-stars">'+'★'.repeat(stars)+'</span></div><div class="review-text">'+text+'</div>';c.appendChild(div);}document.getElementById('name-'+sid).value='';document.getElementById('rev-'+sid).value='';revStars[sid]=0;for(var i=1;i<=5;i++){var el=document.getElementById('revstar-'+sid+'-'+i);if(el)el.style.opacity='.3';}}
+function openLightbox(src){document.getElementById('lightbox-img').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+function toggleTheme(){var h=document.documentElement,btn=document.querySelector('.theme-btn');if(h.getAttribute('data-theme')==='dark'){h.setAttribute('data-theme','light');btn.textContent='☀️';}else{h.setAttribute('data-theme','dark');btn.textContent='🌙';}}
+function shareWhatsApp(){window.open('https://wa.me/?text='+encodeURIComponent('Check out this amazing India Food Map! 🍛🇮🇳 Find the best food in every Indian state! https://kuldeep117.github.io/india-food-map'),'_blank');}
+window.addEventListener('scroll',function(){var btn=document.getElementById('backTop');btn.style.display=window.scrollY>400?'flex':'none';});
+renderCards(states);
 </script>
 </body>
 </html>
